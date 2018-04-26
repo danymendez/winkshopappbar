@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 public class RegistrarActivity extends AppCompatActivity {
 
+    //Hello
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
