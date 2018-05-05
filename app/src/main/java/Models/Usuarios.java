@@ -10,9 +10,9 @@ public class Usuarios {
     public String Password;
     public String Cargo;
     public int IdRol;
-    public String CreatedOn;
-    public String ModifiedOn;
-    public String DeletedOn;
+    public Date CreatedOn;
+    public Date ModifiedOn;
+    public Date DeletedOn;
     public boolean Inactivo;
 
     public String getUsuario() {
@@ -44,6 +44,9 @@ public class Usuarios {
     }
 
     public void setPassword(String password) {
+        if (password == null){
+            password ="";
+        }
         Password = password;
     }
 
@@ -63,27 +66,27 @@ public class Usuarios {
         IdRol = idRol;
     }
 
-    public String getCreatedOn() {
+    public Date getCreatedOn() {
         return CreatedOn;
     }
 
-    public void setCreatedOn(String createdOn) {
+    public void setCreatedOn(Date createdOn) {
         CreatedOn = createdOn;
     }
 
-    public String getModifiedOn() {
+    public Date getModifiedOn() {
         return ModifiedOn;
     }
 
-    public void setModifiedOn(String modifiedOn) {
+    public void setModifiedOn(Date modifiedOn) {
         ModifiedOn = modifiedOn;
     }
 
-    public String getDeletedOn() {
+    public Date getDeletedOn() {
         return DeletedOn;
     }
 
-    public void setDeletedOn(String deletedOn) {
+    public void setDeletedOn(Date deletedOn) {
         DeletedOn = deletedOn;
     }
 
