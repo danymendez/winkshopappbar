@@ -2,6 +2,7 @@ package com.example.palacios.winkshopappbar;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import java.util.List;
 import Models.Usuarios;
 import Services.WinkShopHelpers;
 import Services.WinkShopService;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,23 +44,39 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
-                service.getUsuario().enqueue(new Callback<List<Usuarios>>() {
-                    @Override
-                    public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
-                        if(response.isSuccessful()){
-                            List<Usuarios> listaUsuario = response.body();
-                            for(Usuarios us: listaUsuario){
-                                Toast.makeText(getApplicationContext(),us.getApellidos(),Toast.LENGTH_LONG).show();
+                String usuario = editTextUsuario.getText().toString();
+                String password = editTextPassword.getText().toString();
+
+                if(TextUtils.isEmpty(usuario)){
+
+                    editTextUsuario.setError("Ingresar Usuario");
+                    editTextUsuario.requestFocus();
+
+                } if(TextUtils.isEmpty(password)){
+
+                    editTextPassword.setError("Ingresar Contraseña");
+                    editTextPassword.requestFocus();
+                }else {
+
+
+                    WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+                    service.getUsuario().enqueue(new Callback<List<Usuarios>>() {
+                        @Override
+                        public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
+                            if (response.isSuccessful()) {
+                                List<Usuarios> listaUsuario = response.body();
+                                for (Usuarios us : listaUsuario) {
+                                    Toast.makeText(getApplicationContext(), us.getApellidos(), Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<Usuarios>> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<List<Usuarios>> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
 
