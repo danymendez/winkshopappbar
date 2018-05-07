@@ -43,12 +43,14 @@ public class LoginActivity extends AppCompatActivity {
         ingresarBtn = getButton(R.id.btnIngresar);
         tvwRegistrarse= getTextView(R.id.tvwRegistrarse);
 
+
+
         ingresarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String usuario = editTextUsuario.getText().toString();
-                String password = editTextPassword.getText().toString();
+                final String usuario = editTextUsuario.getText().toString();
+                final String password = editTextPassword.getText().toString();
 
                 if(TextUtils.isEmpty(usuario)){
 
@@ -63,13 +65,26 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
                     service.getUsuario().enqueue(new Callback<List<Usuarios>>() {
+
+
+
                         @Override
                         public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
                             if (response.isSuccessful()) {
+                                boolean seEncontroUsuario = false;
                                 List<Usuarios> listaUsuario = response.body();
                                 for (Usuarios us : listaUsuario) {
-                                    Toast.makeText(getApplicationContext(), us.getApellidos(), Toast.LENGTH_LONG).show();
+                                   if(us.getUsuario().equals(usuario) && us.getPassword().equals(password)){
+                                      seEncontroUsuario = true;
+                                   }
+                                }
+                                if(seEncontroUsuario){
+                                    Intent i = new Intent(getApplicationContext(),DetailActivity.class);
+                                    startActivity(i);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Usuario y/o Contraseña Erronea",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

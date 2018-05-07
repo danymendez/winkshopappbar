@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Usuarios {
 
+    public int IdUsuario;
     public String Usuario;
     public String Nombres;
     public String Apellidos;
@@ -14,6 +15,14 @@ public class Usuarios {
     public Date ModifiedOn;
     public Date DeletedOn;
     public boolean Inactivo;
+
+    public int getIdUsuario() {
+        return IdUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        IdUsuario = idUsuario;
+    }
 
     public String getUsuario() {
         return Usuario;
