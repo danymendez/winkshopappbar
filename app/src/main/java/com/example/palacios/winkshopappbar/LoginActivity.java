@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                tvwRegistrarse.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       Intent intent = new Intent(getApplicationContext(),RegistrarActivity.class);
+                      Intent intent = new Intent(getApplicationContext(),RegistrarActivity.class);
                        startActivity(intent);
                    }
                });
