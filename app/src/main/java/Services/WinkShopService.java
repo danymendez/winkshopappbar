@@ -11,6 +11,8 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface WinkShopService {
 
@@ -19,7 +21,7 @@ public interface WinkShopService {
     Call<List<Usuarios>> getUsuario();
 
     @GET("Usuarios")
-    Call<List<Usuarios>> getUsuario(@Field("usuario") String usuario);
+    Call<List<Usuarios>> getUsuario(@Query("usuario") String usuario);
 
     @POST("Usuarios")
     Call<Usuarios> postUsuarios(@Body Usuarios usuarios);

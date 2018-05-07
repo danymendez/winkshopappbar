@@ -47,6 +47,33 @@ public class RegistrarActivity extends AppCompatActivity {
         edUsuario = getEditText(R.id.edUsuario);
         edPassword = getEditText(R.id.edPassword);
         registrarBtn = getButton(R.id.RegistrarBtn);
+        service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
+        edUsuario.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    service.getUsuario(edUsuario.getText().toString().trim()).enqueue(new Callback<List<Usuarios>>() {
+                        @Override
+                        public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
+                            if(response.isSuccessful()){
+                                if(response.body().size()>0){
+
+                                    edUsuario.setError("Usuario ya Existe");
+                                    edUsuario.requestFocus();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Usuarios>> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        });
+
 
         registrarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +95,7 @@ public class RegistrarActivity extends AppCompatActivity {
                 }else if(validarEditText(edPassword,"Ingresar una Contraseña")){
 
                 }else{
-                     service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
 
                      usuarios = new Usuarios();
                      clientes = new Clientes();
@@ -98,7 +125,45 @@ public class RegistrarActivity extends AppCompatActivity {
                     service.getUsuario(edUsuario.getText().toString().trim()).enqueue(new Callback<List<Usuarios>>() {
                         @Override
                         public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
+                            if(response.isSuccessful()){
+                                if(response.body().size()>0){
 
+                                    edUsuario.setError("Usuario ya Existe");
+                                    edUsuario.requestFocus();
+                                }else{
+                                    service.postUsuarios(usuarios).enqueue(new Callback<Usuarios>() {
+                                        @Override
+                                        public void onResponse(Call<Usuarios> call, Response<Usuarios> response) {
+                                            if(response.isSuccessful()){
+
+                                                usuarios = response.body();
+                                                if(usuarios.getIdUsuario()!=0){
+                                                    clientes.setIdUsuario(usuarios.getIdUsuario());
+                                                    service.postClientes(clientes).enqueue(new Callback<Clientes>() {
+                                                        @Override
+                                                        public void onResponse(Call<Clientes> call, Response<Clientes> response) {
+                                                            if(response.isSuccessful()){
+                                                                Toast.makeText(getApplicationContext(),"Registro Exitosamente",Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<Clientes> call, Throwable t) {
+
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Usuarios> call, Throwable t) {
+
+                                        }
+                                    });
+
+                                }
+                            }
                         }
 
                         @Override
@@ -107,36 +172,6 @@ public class RegistrarActivity extends AppCompatActivity {
                         }
                     });
 
-                    service.postUsuarios(usuarios).enqueue(new Callback<Usuarios>() {
-                        @Override
-                        public void onResponse(Call<Usuarios> call, Response<Usuarios> response) {
-                            if(response.isSuccessful()){
-
-                                    usuarios = response.body();
-                                if(usuarios.getIdUsuario()!=0){
-                                    clientes.setIdUsuario(usuarios.getIdUsuario());
-                                    service.postClientes(clientes).enqueue(new Callback<Clientes>() {
-                                        @Override
-                                        public void onResponse(Call<Clientes> call, Response<Clientes> response) {
-                                            if(response.isSuccessful()){
-                                                Toast.makeText(getApplicationContext(),"Registro Exitosamente",Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Clientes> call, Throwable t) {
-
-                                        }
-                                    });
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Usuarios> call, Throwable t) {
-
-                        }
-                    });
 
 
                 }
