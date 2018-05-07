@@ -1,5 +1,7 @@
 package Models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 
 /**
@@ -7,40 +9,41 @@ import java.util.Date;
  */
 
 public class Clientes {
+    @Expose
     public int IdCliente;
-
+    @Expose
     public String Nombre;
-
+    @Expose
     public String Apellido;
-
+    @Expose
     public String RazonSocial;
-
+    @Expose
     public String Direccion ;
-
+    @Expose
     public int IdPais;
-
+    @Expose
     public int IdDepartamento;
-
+    @Expose
     public String Telefono;
-
+    @Expose
     public String  Celular;
-
+    @Expose
     public String Nit;
-
+    @Expose
     public String Ncr;
-
+    @Expose
     public Date FechaNac;
-
+    @Expose
     public String TipoCliente;
-
+    @Expose
     public Date CreatedOn;
-
+    @Expose
     public Date ModifiedOn;
-
+    @Expose
     public Date DeletedOn;
-
+    @Expose
     public Boolean Inactivo;
-
+    @Expose
     public int IdUsuario;
 
     public int getIdCliente() {

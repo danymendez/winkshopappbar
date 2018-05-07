@@ -1,19 +1,32 @@
 package Models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 
 public class Usuarios {
 
+    @Expose
     public int IdUsuario;
+    @Expose
     public String Usuario;
+    @Expose
     public String Nombres;
+    @Expose
     public String Apellidos;
+    @Expose
     public String Password;
+    @Expose
     public String Cargo;
+    @Expose
     public int IdRol;
+    @Expose
     public Date CreatedOn;
+    @Expose
     public Date ModifiedOn;
+    @Expose
     public Date DeletedOn;
+    @Expose
     public boolean Inactivo;
 
     public int getIdUsuario() {
