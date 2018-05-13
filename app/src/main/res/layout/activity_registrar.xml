@@ -22,100 +22,110 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:background="@color/colorTexViewBlue"
-                android:text="Datos Personales"
-                android:textAlignment="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="26dp" />
 
-            <EditText
-                android:id="@+id/edNombre"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlNombres"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Nombres"
-                android:inputType="textPersonName" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edApellidos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Apellidos"
-                android:inputType="textPersonName" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombres" />
+            </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spinnerPais"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlApellidos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
 
-          <!--  <Spinner
-                android:id="@+id/spinnerDepartamento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" /> -->
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edApellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellidos" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edFechaNac"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Fecha Nacimiento"
-                android:inputType="date" />
+<Spinner
+    android:id="@+id/spinnerPais"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edDireccion"
+</Spinner>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlFechaNac"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Dirección"
-                android:inputType="textMultiLine" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Teléfono"
-                android:inputType="phone" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edFechaNac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha Nacimiento" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edCelular"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlDireccion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Teléfono Celular"
-                android:inputType="phone" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/colorTexViewBlue"
-                android:text="Datos Usuario"
-                android:textAlignment="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="26dp" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Dirección" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edUsuario"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlTelefono"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Usuario: Ejemplo miusuario@ejemplo.com"
-                android:inputType="textEmailAddress" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edPassword"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Teléfono" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlCelular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Contraseña"
-                android:inputType="textPassword" />
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edCelular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Celular" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Usuario" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña" />
+            </android.support.design.widget.TextInputLayout>
+
+
 
             <Button
                 android:id="@+id/RegistrarBtn"
