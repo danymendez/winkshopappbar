@@ -147,7 +147,7 @@ public class RegistrarActivity extends AppCompatActivity {
                     usuarios.setInactivo(false);
                     usuarios.setIdRol(2);
 
-                    //Llenar Información de cliente acorde a los controles
+                    //Llenar Información de cliente acorde a los controles 
                     clientes.setIdCliente(0);
                     clientes.setNombre(usuarios.getNombres());
                     clientes.setApellido(usuarios.getApellidos());
