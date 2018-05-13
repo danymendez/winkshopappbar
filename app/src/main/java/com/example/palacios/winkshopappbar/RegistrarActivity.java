@@ -1,9 +1,11 @@
 package com.example.palacios.winkshopappbar;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -12,9 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import Models.Clientes;
+import Models.Paises;
 import Models.Usuarios;
 import Services.WinkShopHelpers;
 import Services.WinkShopService;
@@ -33,6 +37,8 @@ public class RegistrarActivity extends AppCompatActivity {
     WinkShopService service;
     Usuarios usuarios;
     Clientes clientes;
+    List<Paises> listaPaises;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +53,38 @@ public class RegistrarActivity extends AppCompatActivity {
         edUsuario = getEditText(R.id.edUsuario);
         edPassword = getEditText(R.id.edPassword);
         registrarBtn = getButton(R.id.RegistrarBtn);
+        spinnerPais = getSpinner(R.id.spinnerPais);
+
         service = winkShopHelpers.retrofit.create(WinkShopService.class);
+         final ProgressDialog progressDialog = new ProgressDialog(this);
+         progressDialog.setMax(100);
+         progressDialog.setTitle("Cargando");
+         progressDialog.setMessage("Cargando");
+         progressDialog.show();
+
+        service.getPaises().enqueue(new Callback<List<Paises>>() {
+            @Override
+            public void onResponse(Call<List<Paises>> call, Response<List<Paises>> response) {
+              if(response.isSuccessful()){
+                  listaPaises=response.body();
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,response.body());
+                    spinnerPais.setAdapter(arrayAdapter);
+                  progressDialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Paises>> call, Throwable t) {
+
+            }
+
+            @Override
+            protected void finalize() throws Throwable {
+                super.finalize();
+
+            }
+        });
 
         edUsuario.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -116,6 +153,12 @@ public class RegistrarActivity extends AppCompatActivity {
                     clientes.setApellido(usuarios.getApellidos());
                     clientes.setTelefono(edTelefono.getText().toString().trim());
                     clientes.setCelular(edCelular.getText().toString().trim());
+                   for(Paises i : listaPaises){
+                       if(i.NombrePais.trim().equals(spinnerPais.getSelectedItem().toString().trim())){
+                           clientes.setIdPais(i.IdPais);
+                       }
+                   }
+
                     clientes.setRazonSocial("None");
                     clientes.setDireccion(edDireccion.getText().toString().trim());
                     clientes.setTipoCliente("N");

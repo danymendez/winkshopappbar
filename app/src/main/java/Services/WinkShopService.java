@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import Models.Clientes;
+import Models.Paises;
 import Models.Usuarios;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -30,6 +31,8 @@ public interface WinkShopService {
     @POST("Clientes")
     Call<Clientes> postClientes(@Body Clientes clientes);
 
-
+    //Paises
+    @GET("Paises")
+    Call<List<Paises>> getPaises();
 
 }
