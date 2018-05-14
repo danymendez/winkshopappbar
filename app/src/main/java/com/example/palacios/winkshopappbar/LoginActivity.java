@@ -1,6 +1,7 @@
 package com.example.palacios.winkshopappbar;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,9 +26,10 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     Button ingresarBtn;
-    EditText editTextUsuario;
-    EditText editTextPassword;
+    TextInputLayout editTextUsuario;
+    TextInputLayout editTextPassword;
     TextView tvwRegistrarse;
+    Button btnRegistrarse;
     List<Usuarios> usuariosList;
 
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
@@ -38,10 +40,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        editTextUsuario = getEdit(R.id.edTextUsuario);
-        editTextPassword = getEdit(R.id.edTextPassword);
-        ingresarBtn = getButton(R.id.btnIngresar);
-        tvwRegistrarse= getTextView(R.id.tvwRegistrarse);
+        editTextUsuario = getTextInputLayout(R.id.edUsuarioLogin);
+        editTextPassword = getTextInputLayout(R.id.edPasswordLogin);
+        ingresarBtn = (Button) findViewById(R.id.btnIngresar);
+        btnRegistrarse= (Button)findViewById(R.id.btnRegistrarseLogin);
 
 
 
@@ -49,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String usuario = editTextUsuario.getText().toString();
-                final String password = editTextPassword.getText().toString();
+                final String usuario = editTextUsuario.getEditText().getText().toString();
+                final String password = editTextPassword.getEditText().getText().toString();
 
                 if(TextUtils.isEmpty(usuario)){
 
@@ -99,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-               tvwRegistrarse.setOnClickListener(new View.OnClickListener() {
+        btnRegistrarse.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
                       Intent intent = new Intent(getApplicationContext(),RegistrarActivity.class);
@@ -114,6 +116,10 @@ public class LoginActivity extends AppCompatActivity {
     }
     public TextView getTextView(int i){
         return (TextView)findViewById(i);
+    }
+
+    public TextInputLayout getTextInputLayout(int i){
+        return (TextInputLayout)findViewById(i);
     }
 
     public Button getButton(int i){

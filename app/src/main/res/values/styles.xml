@@ -17,10 +17,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ic_user_style">
-        <item name="android:drawable">@drawable/user-name</item>
-        <item name="android:layout_width">20dp</item>
-        <item name="android:layout_height">20dp</item>
-    </style>
+
 
 </resources>

@@ -40,13 +40,15 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tlPassword"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:passwordToggleEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edPassword"
                     android:drawableLeft="@drawable/housekey"
                     android:drawableStart="@drawable/housekey"
                     android:drawablePadding="10dp"
+
                     android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,19 +104,18 @@
                 </Spinner>
             </LinearLayout>
 
-        <!--    <android.support.design.widget.TextInputLayout
+          <android.support.design.widget.TextInputLayout
                 android:id="@+id/tlFechaNac"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edFechaNac"
-                    android:drawableLeft="@drawable/user-name"
-                    android:drawablePadding="10dp"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Fecha Nacimiento" />
-            </android.support.design.widget.TextInputLayout> -->
+            </android.support.design.widget.TextInputLayout>
 
 
             <android.support.design.widget.TextInputLayout
@@ -165,12 +166,30 @@
 
 
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_gravity="center">
 
-            <Button
-                android:id="@+id/RegistrarBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Registrarse" />
+    <Button
+        android:id="@+id/CancelarBtn"
+        android:layout_width="150dp"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_height="wrap_content"
+        android:text="Cancelar" />
+
+    <Button
+        android:id="@+id/RegistrarBtn"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Registrarse" />
+</LinearLayout>
+
 
         </LinearLayout>
 
