@@ -20,7 +20,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity" />
-        <activity android:name=".RegistrarActivity"></activity>
+        <activity
+            android:name=".RegistrarActivity"
+            android:label="Registro de Usuario" />
+        <activity
+            android:name=".NavigationActivity"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,7 +1,10 @@
 package com.example.palacios.winkshopappbar;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -57,11 +60,21 @@ public class RegistrarActivity extends AppCompatActivity {
         spinnerPais = getSpinner(R.id.spinnerPais);
 
         service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
          final ProgressDialog progressDialog = new ProgressDialog(this);
          progressDialog.setMax(100);
-         progressDialog.setTitle("Cargando");
+         progressDialog.setTitle("Pantalla Registro");
          progressDialog.setMessage("Cargando");
          progressDialog.show();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert Dialog");
+        alertDialog.setMessage("Welcome to dear user.");
+
+
+
+       final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
 
         service.getPaises().enqueue(new Callback<List<Paises>>() {
             @Override
@@ -116,7 +129,11 @@ public class RegistrarActivity extends AppCompatActivity {
         registrarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarEditText(edNombre,"Ingresar un Nombre")){
+                 if(validarEditText(edUsuario,"Ingresar Usuario")){
+
+                }else if(validarEditText(edPassword,"Ingresar una Contraseña")) {
+
+                 }else if(validarEditText(edNombre,"Ingresar un Nombre")){
 
                 }else if(validarEditText(edApellido,"Ingresar Un Apellido")){
 
@@ -128,16 +145,17 @@ public class RegistrarActivity extends AppCompatActivity {
 
                 }else if(validarEditText(edCelular,"Ingresar un Celular")){
 
-                }else if(validarEditText(edUsuario,"Ingresar Usuario")){
 
-                }else if(validarEditText(edPassword,"Ingresar una Contraseña")){
 
                 }else{
 
 
                      usuarios = new Usuarios();
                      clientes = new Clientes();
-
+                    progressDialog.setMax(100);
+                    progressDialog.setTitle("Pantalla Registro");
+                    progressDialog.setMessage("Cargando");
+                    progressDialog.show();
                     //Llenar información de usuario en la clase
                     usuarios.setIdUsuario(0);
                     usuarios.setUsuario(edUsuario.getEditText().getText().toString().trim());
@@ -165,6 +183,9 @@ public class RegistrarActivity extends AppCompatActivity {
                         public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
                             if(response.isSuccessful()){
                                 if(response.body().size()>0){
+                                    progressDialog.dismiss();
+
+
 
                                     edUsuario.setError("Usuario ya Existe");
                                     edUsuario.requestFocus();
@@ -181,7 +202,18 @@ public class RegistrarActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onResponse(Call<Clientes> call, Response<Clientes> response) {
                                                             if(response.isSuccessful()){
-                                                                Toast.makeText(getApplicationContext(),"Registro Exitosamente",Toast.LENGTH_LONG).show();
+                                                                progressDialog.dismiss();
+                                                                dialog.setTitle( "WinkShop" )
+
+                                                                        .setMessage("El registro se ha realizado exitosamente")
+                                                                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialoginterface, int i) {
+                                                                               // Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                                                                                finish();
+                                                                            }
+                                                                        }).show();
+
+                                                            //    Toast.makeText(getApplicationContext(),"Registro Exitosamente",Toast.LENGTH_LONG).show();
                                                             }
                                                         }
 
@@ -241,7 +273,7 @@ public class RegistrarActivity extends AppCompatActivity {
     public boolean validarEditText(TextInputLayout editText,String Mensaje){
         boolean estaVacio = false;
         if(TextUtils.isEmpty(editText.getEditText().getText().toString().trim())){
-            editText.setError(Mensaje);
+            editText.getEditText().setError(Mensaje);
             editText.requestFocus();
             estaVacio = true;
         }

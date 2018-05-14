@@ -1,7 +1,10 @@
 package com.example.palacios.winkshopappbar;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout editTextUsuario;
     TextInputLayout editTextPassword;
     TextView tvwRegistrarse;
-    Button btnRegistrarse;
+    Button btnRegistrarse,btnInvitado;
     List<Usuarios> usuariosList;
 
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
@@ -43,9 +46,20 @@ public class LoginActivity extends AppCompatActivity {
         editTextUsuario = getTextInputLayout(R.id.tlUsuarioLogin);
         editTextPassword = getTextInputLayout(R.id.tlPasswordLogin);
         ingresarBtn = (Button) findViewById(R.id.btnIngresar);
+        btnInvitado = (Button)findViewById(R.id.btnInvitado);
         btnRegistrarse= (Button)findViewById(R.id.btnRegistrarseLogin);
 
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
+
+        btnInvitado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),NavigationActivity.class);
+                startActivity(i);
+            }
+        });
 
         ingresarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,18 +70,21 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(usuario)){
 
-                    editTextUsuario.setError("Ingresar Usuario");
+                    editTextUsuario.getEditText().setError("Ingresar Usuario");
                     editTextUsuario.requestFocus();
 
                 }else if(TextUtils.isEmpty(password)){
 
-                    editTextPassword.setError("Ingresar Contraseña");
+                    editTextPassword.getEditText().setError("Ingresar Contraseña");
                     editTextPassword.requestFocus();
                 }else {
 
-
                     WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
 
+                    progressDialog.setMax(100);
+                    progressDialog.setTitle("Login");
+                    progressDialog.setMessage("Cargando");
+                    progressDialog.show();
                     service.getUsuario().enqueue(new Callback<List<Usuarios>>() {
 
 
@@ -83,10 +100,21 @@ public class LoginActivity extends AppCompatActivity {
                                    }
                                 }
                                 if(seEncontroUsuario){
+                                    progressDialog.dismiss();
                                     Intent i = new Intent(getApplicationContext(),DetailActivity.class);
                                     startActivity(i);
                                 }else{
-                                    Toast.makeText(getApplicationContext(),"Usuario y/o Contraseña Erronea",Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    dialog.setTitle( "Error" )
+
+                                            .setMessage("Usuario y/o Contraseña Erronea")
+                                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialoginterface, int i) {
+                                                    // Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+
+                                                }
+                                            }).show();
+                                  //  Toast.makeText(getApplicationContext(),"Usuario y/o Contraseña Erronea",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
