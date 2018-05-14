@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        editTextUsuario = getTextInputLayout(R.id.edUsuarioLogin);
-        editTextPassword = getTextInputLayout(R.id.edPasswordLogin);
+        editTextUsuario = getTextInputLayout(R.id.tlUsuarioLogin);
+        editTextPassword = getTextInputLayout(R.id.tlPasswordLogin);
         ingresarBtn = (Button) findViewById(R.id.btnIngresar);
         btnRegistrarse= (Button)findViewById(R.id.btnRegistrarseLogin);
 
