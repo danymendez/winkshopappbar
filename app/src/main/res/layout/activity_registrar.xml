@@ -22,6 +22,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edUsuario"
+                    android:drawableLeft="@drawable/user"
+                    android:drawableStart="@drawable/user"
+                    android:drawablePadding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Usuario" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tlPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edPassword"
+                    android:drawableLeft="@drawable/housekey"
+                    android:drawableStart="@drawable/housekey"
+                    android:drawablePadding="10dp"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña" />
+            </android.support.design.widget.TextInputLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tlNombres"
@@ -30,7 +61,8 @@
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edNombre"
-                    android:drawableLeft="@drawable/user-name"
+                    android:drawableLeft="@drawable/editprofile"
+                    android:drawableStart="@drawable/editprofile"
                     android:drawablePadding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -44,20 +76,32 @@
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edApellido"
-                    android:drawableLeft="@drawable/user-name"
-
+                    android:drawableLeft="@drawable/businesscard"
+                    android:drawableStart="@drawable/businesscard"
                     android:drawablePadding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Apellidos" />
             </android.support.design.widget.TextInputLayout>
 
-<Spinner
-    android:id="@+id/spinnerPais"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
 
-</Spinner>
+                    android:drawableLeft="@drawable/flag"
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    />
+                <Spinner
+                    android:id="@+id/spinnerPais"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+                </Spinner>
+            </LinearLayout>
+
         <!--    <android.support.design.widget.TextInputLayout
                 android:id="@+id/tlFechaNac"
                 android:layout_width="match_parent"
@@ -80,6 +124,9 @@
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edDireccion"
+                    android:drawableLeft="@drawable/directions"
+                    android:drawableStart="@drawable/directions"
+                    android:drawablePadding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Dirección" />
@@ -92,6 +139,9 @@
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edTelefono"
+                    android:drawableLeft="@drawable/callanswer"
+                    android:drawableStart="@drawable/callanswer"
+                    android:drawablePadding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Teléfono" />
@@ -104,34 +154,15 @@
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edCelular"
+                    android:drawableLeft="@drawable/smartphone"
+                    android:drawableStart="@drawable/smartphone"
+                    android:drawablePadding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Celular" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tlUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edUsuario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Usuario" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tlPassword"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Contraseña" />
-            </android.support.design.widget.TextInputLayout>
 
 
 
