@@ -1,5 +1,6 @@
 package com.example.palacios.winkshopappbar;
 
+import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -147,25 +148,6 @@ public class NavigationActivity extends AppCompatActivity
         });
 
 
-
-
-//        service.getProductos(4).enqueue(new Callback<Productos>() {
-//            @Override
-//            public void onResponse(Call<Productos> call, Response<Productos> response) {
-//                if(response.isSuccessful()){
-//
-//                    Productos productos = response.body();
-//
-//                    Toast.makeText(getApplicationContext(),productos.NombreProducto+"",Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Productos> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(),t.getMessage().toString()+"",Toast.LENGTH_LONG).show();
-//            }
-//        });
-
     }
 
     @Override
@@ -204,20 +186,34 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        android.support.v4.app.Fragment f = null;
+
+        boolean fragmentSeleccionado = true;
+
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_perfil) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_home) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_caballeros) {
+f = new CaballerosFrag();
+fragmentSeleccionado = true;
+        } else if (id == R.id.nav_damas) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_ninios) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
+        }
+
+
+        if(fragmentSeleccionado){
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
+            item.setChecked(true);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

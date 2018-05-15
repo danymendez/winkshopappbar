@@ -3,24 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+
+
+    <item android:title="Perfil">
+        <menu>
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/editprofile"
+            android:title="Mi Perfil" />
+            <item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Home" />
+        </menu>
+
+    </item>
+
+    <item android:title="Categorias">
+        <menu>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_caballeros"
+            android:icon="@drawable/gentleman"
+            android:title="Caballeros" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_damas"
+            android:icon="@drawable/lady"
+            android:title="Damas" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+            android:id="@+id/nav_ninios"
+            android:icon="@drawable/childrensmall"
+            android:title="Niñ@s" />
+        </menu>
+    </item>
 
     <item android:title="Communicate">
         <menu>
