@@ -13,12 +13,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ViewFlipper;
+
+import Adapters.AdaptadorOfertas;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ViewFlipper viewFlipper;
+    ListView listView;
+    String[] productos,descripcion;
+    float[] precio;
+    int[] imagenes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,15 @@ public class NavigationActivity extends AppCompatActivity
         flipperImages(R.drawable.promo1);
         flipperImages(R.drawable.promo2);
         flipperImages(R.drawable.promo3);
+
+        listView = (ListView)findViewById(R.id.ListViewPpal);
+        productos = new String[]{"producto 1","producto 2","producto 3"};
+        descripcion = new String[]{"descripcion 1","descripcion 2","descripcion 3"};
+        precio = new float[]{1,2,3};
+        imagenes = new int[]{R.drawable.camisagris,R.drawable.camisablanca,R.drawable.camisaverde};
+
+        AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
+        listView.setAdapter(adaptadorOfertas);
 
     }
 
