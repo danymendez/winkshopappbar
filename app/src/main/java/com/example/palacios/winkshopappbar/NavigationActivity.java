@@ -14,9 +14,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import Adapters.AdaptadorOfertas;
+import Models.Productos;
+import Services.WinkShopHelpers;
+import Services.WinkShopService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +33,7 @@ public class NavigationActivity extends AppCompatActivity
     String[] productos,descripcion;
     float[] precio;
     int[] imagenes;
+    WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,25 @@ public class NavigationActivity extends AppCompatActivity
 
         AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
         listView.setAdapter(adaptadorOfertas);
+
+        WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
+        service.getProductos(4).enqueue(new Callback<Productos>() {
+            @Override
+            public void onResponse(Call<Productos> call, Response<Productos> response) {
+                if(response.isSuccessful()){
+
+                    Productos productos = response.body();
+
+                    Toast.makeText(getApplicationContext(),productos.NombreProducto+"",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Productos> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),t.getMessage().toString()+"",Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

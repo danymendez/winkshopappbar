@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import Models.Clientes;
+import Models.Ofertas;
 import Models.Paises;
+import Models.Productos;
 import Models.Usuarios;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,5 +36,16 @@ public interface WinkShopService {
     //Paises
     @GET("Paises")
     Call<List<Paises>> getPaises();
+
+    //Productos
+    @GET("Productos")
+    Call<List<Productos>> getProductos();
+
+    @GET("Productos/id")
+    Call<Productos> getProductos(@Query("id") int id);
+
+    //Ofertas
+    @GET("Ofertas")
+    Call<List<Ofertas>> getOfertas();
 
 }

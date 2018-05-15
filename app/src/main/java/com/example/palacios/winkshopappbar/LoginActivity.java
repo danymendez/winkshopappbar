@@ -85,10 +85,8 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.setTitle("Login");
                     progressDialog.setMessage("Cargando");
                     progressDialog.show();
+
                     service.getUsuario().enqueue(new Callback<List<Usuarios>>() {
-
-
-
                         @Override
                         public void onResponse(Call<List<Usuarios>> call, Response<List<Usuarios>> response) {
                             if (response.isSuccessful()) {
