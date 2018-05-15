@@ -7,7 +7,7 @@ public class Ofertas {
     public int IdProducto;
     public Date FechaInicio;
     public Date FechaFinal;
-    public float Descuento;
+    public double Descuento;
     public Date CreatedOn;
     public Date ModifiedOn;
     public Date DeletedOn;
@@ -45,11 +45,11 @@ public class Ofertas {
         FechaFinal = fechaFinal;
     }
 
-    public float getDescuento() {
+    public double getDescuento() {
         return Descuento;
     }
 
-    public void setDescuento(float descuento) {
+    public void setDescuento(double descuento) {
         Descuento = descuento;
     }
 
