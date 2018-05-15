@@ -1,5 +1,7 @@
 package com.example.palacios.winkshopappbar;
 
+import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -72,19 +74,24 @@ public class NavigationActivity extends AppCompatActivity
         flipperImages(R.drawable.promo3);
 
 
+        listView = (ListView)findViewById(R.id.ListViewPpal);
 
 
-
-//        AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
-//        listView.setAdapter(adaptadorOfertas);
 
         final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+
+
+        progressDialog.setMax(100);
+        progressDialog.setTitle("");
+        progressDialog.setMessage("Cargando");
+        progressDialog.show();
 
         service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
             @Override
             public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
                 if(response.isSuccessful()){
-
+            listaOfertas = response.body();
 
                     service.getProductos().enqueue(new Callback<List<Productos>>() {
                         @Override
@@ -94,33 +101,39 @@ public class NavigationActivity extends AppCompatActivity
                                 listaProductos = response.body();
 
 
-                                int tamanio = listaProductos.size();
+                                int tamanio = listaOfertas.size();
                                 productos = new String[tamanio];
                                 descripcion = new String[tamanio];
                                 precio = new double[tamanio];
                                 imagenes = new int[tamanio];
 
 
-                                for(int i =0;i<listaProductos.size();i++) {
-
-                                    if (listaOfertas.get(i).getIdProducto() == listaProductos.get(i).getIdProducto()) {
-                                        productos[i] = listaProductos.get(i).getNombreProducto();
-                                        descripcion[i] = listaProductos.get(i).getDescripcion();
-                                        precio[i] = listaProductos.get(i).getPrecio();
-                                        imagenes[i] = R.drawable.camisaverde;
 
 
+                                    for(int o = 0;o< listaOfertas.size();o++) {
+
+                                        for(int i =0;i<listaProductos.size();i++) {
+                                        if (listaOfertas.get(o).getIdProducto() == listaProductos.get(i).getIdProducto()) {
+                                            productos[o] = listaProductos.get(i).getNombreProducto();
+                                            descripcion[o] = listaProductos.get(i).getDescripcion();
+                                            precio[o] = listaProductos.get(i).getPrecio();
+                                            imagenes[o] = R.drawable.camisaverde;
+
+
+                                        }
                                     }
                                 }
 
-        AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
-        listView.setAdapter(adaptadorOfertas);
+                                progressDialog.dismiss();
+
+                                final  AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
+                                listView.setAdapter(adaptadorOfertas);
                             }
                         }
 
                         @Override
                         public void onFailure(Call<List<Productos>> call, Throwable t) {
-
+                            Toast.makeText(getApplicationContext(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -129,7 +142,7 @@ public class NavigationActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<List<Ofertas>> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
             }
         });
 
