@@ -3,6 +3,7 @@ package com.example.palacios.winkshopappbar;
 import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,CaballerosFrag.OnFragmentInteractionListener {
 
     ViewFlipper viewFlipper;
     ListView listView;
@@ -187,7 +188,7 @@ public class NavigationActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-        android.support.v4.app.Fragment f = null;
+      android.support.v4.app.Fragment f = null;
 
         boolean fragmentSeleccionado = true;
 
@@ -214,6 +215,7 @@ fragmentSeleccionado = true;
         if(fragmentSeleccionado){
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
             item.setChecked(true);
+            getSupportActionBar().setTitle("Caballeros");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -236,4 +238,13 @@ fragmentSeleccionado = true;
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }
