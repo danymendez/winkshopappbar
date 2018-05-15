@@ -19,10 +19,10 @@ public class AdaptadorOfertas extends ArrayAdapter {
     private int[] imagenes;
     private Context context;
     private String[] descripcion;
-    private float[] precio;
+    private double[] precio;
     private View item;
 
-    public AdaptadorOfertas(Context context, String[] productos, int[] imagenes, String[] descripcion,float[] precio) {
+    public AdaptadorOfertas(Context context, String[] productos, int[] imagenes, String[] descripcion,double[] precio) {
         super(context, R.layout.listofertaslayout,productos);
         this.productos = productos;
         this.imagenes = imagenes;

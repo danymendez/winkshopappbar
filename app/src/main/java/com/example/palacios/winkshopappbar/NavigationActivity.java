@@ -17,7 +17,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.util.List;
+
 import Adapters.AdaptadorOfertas;
+import Models.Ofertas;
 import Models.Productos;
 import Services.WinkShopHelpers;
 import Services.WinkShopService;
@@ -31,8 +34,10 @@ public class NavigationActivity extends AppCompatActivity
     ViewFlipper viewFlipper;
     ListView listView;
     String[] productos,descripcion;
-    float[] precio;
+    double[] precio;
     int[] imagenes;
+    List<Ofertas> listaOfertas;
+    List<Productos> listaProductos;
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
 
     @Override
@@ -66,33 +71,87 @@ public class NavigationActivity extends AppCompatActivity
         flipperImages(R.drawable.promo2);
         flipperImages(R.drawable.promo3);
 
-        listView = (ListView)findViewById(R.id.ListViewPpal);
-        productos = new String[]{"producto 1","producto 2","producto 3"};
-        descripcion = new String[]{"descripcion 1","descripcion 2","descripcion 3"};
-        precio = new float[]{1,2,3};
-        imagenes = new int[]{R.drawable.camisagris,R.drawable.camisablanca,R.drawable.camisaverde};
+
+
+
+
+//        AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
+//        listView.setAdapter(adaptadorOfertas);
+
+        final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
+        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
+            @Override
+            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
+                if(response.isSuccessful()){
+
+
+                    service.getProductos().enqueue(new Callback<List<Productos>>() {
+                        @Override
+                        public void onResponse(Call<List<Productos>> call, Response<List<Productos>> response) {
+                            if(response.isSuccessful()){
+
+                                listaProductos = response.body();
+
+
+                                int tamanio = listaProductos.size();
+                                productos = new String[tamanio];
+                                descripcion = new String[tamanio];
+                                precio = new double[tamanio];
+                                imagenes = new int[tamanio];
+
+
+                                for(int i =0;i<listaProductos.size();i++) {
+
+                                    if (listaOfertas.get(i).getIdProducto() == listaProductos.get(i).getIdProducto()) {
+                                        productos[i] = listaProductos.get(i).getNombreProducto();
+                                        descripcion[i] = listaProductos.get(i).getDescripcion();
+                                        precio[i] = listaProductos.get(i).getPrecio();
+                                        imagenes[i] = R.drawable.camisaverde;
+
+
+                                    }
+                                }
 
         AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
         listView.setAdapter(adaptadorOfertas);
+                            }
+                        }
 
-        WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+                        @Override
+                        public void onFailure(Call<List<Productos>> call, Throwable t) {
 
-        service.getProductos(4).enqueue(new Callback<Productos>() {
-            @Override
-            public void onResponse(Call<Productos> call, Response<Productos> response) {
-                if(response.isSuccessful()){
+                        }
+                    });
 
-                    Productos productos = response.body();
-
-                    Toast.makeText(getApplicationContext(),productos.NombreProducto+"",Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Productos> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getMessage().toString()+"",Toast.LENGTH_LONG).show();
+            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
+
             }
         });
+
+
+
+
+//        service.getProductos(4).enqueue(new Callback<Productos>() {
+//            @Override
+//            public void onResponse(Call<Productos> call, Response<Productos> response) {
+//                if(response.isSuccessful()){
+//
+//                    Productos productos = response.body();
+//
+//                    Toast.makeText(getApplicationContext(),productos.NombreProducto+"",Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Productos> call, Throwable t) {
+//                Toast.makeText(getApplicationContext(),t.getMessage().toString()+"",Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 
