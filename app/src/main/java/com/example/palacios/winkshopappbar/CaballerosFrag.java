@@ -54,7 +54,7 @@ public class CaballerosFrag extends Fragment {
 
 
         final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity().getApplicationContext());
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
 
         progressDialog.setMax(100);
@@ -85,7 +85,7 @@ public class CaballerosFrag extends Fragment {
 
                     progressDialog.dismiss();
 
-                    final  AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getActivity().getApplicationContext(),productos,imagenes,descripcion,precio);
+                    final  AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getActivity(),productos,imagenes,descripcion,precio);
                     listView.setAdapter(adaptadorOfertas);
                 }
             }
