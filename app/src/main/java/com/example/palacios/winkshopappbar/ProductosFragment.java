@@ -2,21 +2,23 @@ package com.example.palacios.winkshopappbar;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.palacios.winkshopappbar.dummy.DummyContent.DummyItem;
+
 import java.util.List;
 
-import Adapters.AdaptadorOfertas;
+import Adapters.MyProductosRecyclerViewAdapter;
 import Models.Ofertas;
 import Models.Productos;
 import Services.WinkShopHelpers;
@@ -25,16 +27,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link WelcomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * A fragment representing a list of Items.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * interface.
  */
-public class WelcomeFragment extends Fragment {
+public class ProductosFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    // TODO: Customize parameter argument names
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
+    private OnListFragmentInteractionListener mListener;
     ViewFlipper viewFlipper;
     ListView listView;
     String[] productos,descripcion;
@@ -42,56 +47,54 @@ public class WelcomeFragment extends Fragment {
     int[] imagenes;
     List<Ofertas> listaOfertas;
     List<Productos> listaProductos;
+    RecyclerView recycler;
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
 
-    public WelcomeFragment() {
-        // Required empty public constructor
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public ProductosFragment() {
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.fragment_welcome,container,false);
-        viewFlipper = (ViewFlipper)view.findViewById(R.id.viewFlipper);
-
-        listView = (ListView)view.findViewById(R.id.ListViewPpal);
-
-
-
-        return inflater.inflate(R.layout.fragment_welcome, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static ProductosFragment newInstance(int columnCount) {
+        ProductosFragment fragment = new ProductosFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        callingResponse();
-    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_productos_list, container, false);
+        callingResponse(view);
+        // Set the adapter
+
+        return view;
+    }
+
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -106,36 +109,21 @@ public class WelcomeFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onListFragmentInteraction(DummyItem item);
     }
 
-    public void flipperImages(int i){
-
-
-        ImageView imgView = new ImageView(getActivity());
-        imgView.setBackgroundResource(i);
-
-        viewFlipper.addView(imgView);
-        viewFlipper.setFlipInterval(2000);
-        viewFlipper.setAutoStart(true);
-
-        viewFlipper.setInAnimation(getActivity(),android.R.anim.slide_in_left);
-
-
-    }
-
-    public void callingResponse(){
-        flipperImages(R.drawable.promo1);
+    public void callingResponse(View v){
+       /* flipperImages(R.drawable.promo1);
         flipperImages(R.drawable.promo2);
         flipperImages(R.drawable.promo3);
-
+*/
         final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
@@ -184,8 +172,16 @@ public class WelcomeFragment extends Fragment {
 
                                 progressDialog.dismiss();
 
-                                final AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getActivity(),productos,imagenes,descripcion,precio);
-                                listView.setAdapter(adaptadorOfertas);
+                                if (v instanceof RecyclerView) {
+                                    Context context = v.getContext();
+                                    RecyclerView recyclerView = (RecyclerView) v;
+                                    if (mColumnCount <= 1) {
+                                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                                    } else {
+                                        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                                    }
+                                    recyclerView.setAdapter(new MyProductosRecyclerViewAdapter(listaProductos, mListener));
+                                }
                             }
                         }
 

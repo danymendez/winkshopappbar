@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.palacios.winkshopappbar.dummy.DummyContent;
+
 import java.util.List;
 
 import Adapters.AdaptadorOfertas;
@@ -33,16 +35,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,CaballerosFrag.OnFragmentInteractionListener , WelcomeFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProductosFragment.OnListFragmentInteractionListener {
 
-    ViewFlipper viewFlipper;
-    ListView listView;
-    String[] productos,descripcion;
-    double[] precio;
-    int[] imagenes;
-    List<Ofertas> listaOfertas;
-    List<Productos> listaProductos;
-    WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,85 +63,6 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-//        viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
-//
-//        flipperImages(R.drawable.promo1);
-//        flipperImages(R.drawable.promo2);
-//        flipperImages(R.drawable.promo3);
-//
-//
-//        listView = (ListView)findViewById(R.id.ListViewPpal);
-//
-//
-//
-//        final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
-//        final ProgressDialog progressDialog = new ProgressDialog(this);
-//
-//
-//        progressDialog.setMax(100);
-//        progressDialog.setTitle("");
-//        progressDialog.setMessage("Cargando");
-//        progressDialog.show();
-//
-//        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
-//            @Override
-//            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
-//                if(response.isSuccessful()){
-//            listaOfertas = response.body();
-//
-//                    service.getProductos().enqueue(new Callback<List<Productos>>() {
-//                        @Override
-//                        public void onResponse(Call<List<Productos>> call, Response<List<Productos>> response) {
-//                            if(response.isSuccessful()){
-//
-//                                listaProductos = response.body();
-//
-//
-//                                int tamanio = listaOfertas.size();
-//                                productos = new String[tamanio];
-//                                descripcion = new String[tamanio];
-//                                precio = new double[tamanio];
-//                                imagenes = new int[tamanio];
-//
-//
-//
-//
-//                                    for(int o = 0;o< listaOfertas.size();o++) {
-//
-//                                        for(int i =0;i<listaProductos.size();i++) {
-//                                        if (listaOfertas.get(o).getIdProducto() == listaProductos.get(i).getIdProducto()) {
-//                                            productos[o] = listaProductos.get(i).getNombreProducto();
-//                                            descripcion[o] = listaProductos.get(i).getDescripcion();
-//                                            precio[o] = listaProductos.get(i).getPrecio();
-//                                            imagenes[o] = R.drawable.camisaverde;
-//
-//
-//                                        }
-//                                    }
-//                                }
-//
-//                                progressDialog.dismiss();
-//
-//                                final  AdaptadorOfertas adaptadorOfertas = new AdaptadorOfertas(getApplicationContext(),productos,imagenes,descripcion,precio);
-//                                listView.setAdapter(adaptadorOfertas);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<List<Productos>> call, Throwable t) {
-//                            Toast.makeText(getApplicationContext(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
-//            }
-//        });
 
 
     }
@@ -198,13 +114,12 @@ public class NavigationActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_home) {
 
-f = new WelcomeFragment();
+f = new ProductosFragment();
 fragmentSeleccionado = true;
 
 
         } else if (id == R.id.nav_caballeros) {
-f = new CaballerosFrag();
-fragmentSeleccionado = true;
+
         } else if (id == R.id.nav_damas) {
 
         } else if (id == R.id.nav_ninios) {
@@ -217,7 +132,7 @@ fragmentSeleccionado = true;
 
 
         if(fragmentSeleccionado){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,f).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
             item.setChecked(true);
             getSupportActionBar().setTitle("Caballeros");
         }
@@ -230,7 +145,7 @@ fragmentSeleccionado = true;
     public void flipperImages(int i){
 
 
-        ImageView imgView = new ImageView(getApplication());
+ /*       ImageView imgView = new ImageView(getApplication());
         imgView.setBackgroundResource(i);
 
         viewFlipper.addView(imgView);
@@ -238,17 +153,19 @@ fragmentSeleccionado = true;
         viewFlipper.setAutoStart(true);
 
         viewFlipper.setInAnimation(getApplicationContext(),android.R.anim.slide_in_left);
-
-
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+*/
 
     }
+
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
 }
