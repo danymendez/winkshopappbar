@@ -2,6 +2,7 @@ package com.example.palacios.winkshopappbar;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -181,9 +182,16 @@ public class ProductosFragment extends Fragment {
                                         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                                     }
                                     if(listproductosFiltrados.size()==0){
-                                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                                        alertDialog.setTitle("");
-                                        alertDialog.setMessage("No productos Disponible para esta categoria");
+                                        final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                                        dialog.setTitle( "Error" )
+
+                                                .setMessage("No hay productos Disponibles momentaneamente")
+                                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialoginterface, int i) {
+                                                        // Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+
+                                                    }
+                                                }).show();
                                     }
 
                                     recyclerView.setAdapter(new MyProductosRecyclerViewAdapter(listproductosFiltrados, mListener));
