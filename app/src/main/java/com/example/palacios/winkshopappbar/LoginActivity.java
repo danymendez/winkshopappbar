@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 if(seEncontroUsuario){
                                     progressDialog.dismiss();
-                                    Intent i = new Intent(getApplicationContext(),DetailActivity.class);
+                                    Intent i = new Intent(getApplicationContext(),NavigationActivity.class);
                                     startActivity(i);
                                 }else{
                                     progressDialog.dismiss();

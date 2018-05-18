@@ -4,22 +4,24 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.palacios.winkshopappbar.dummy.DummyContent;
 import com.example.palacios.winkshopappbar.dummy.DummyContent.DummyItem;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import Adapters.MyOfertasRecyclerViewAdapter;
 import Adapters.MyProductosRecyclerViewAdapter;
 import Models.Ofertas;
 import Models.Productos;
@@ -35,7 +37,7 @@ import retrofit2.Response;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ProductosFragment extends Fragment {
+public class OfertasFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -48,25 +50,20 @@ public class ProductosFragment extends Fragment {
     double[] precio;
     int[] imagenes;
     List<Ofertas> listaOfertas;
-    List<Productos> listaProductos,listproductosFiltrados;
+    List<Productos> listaProductos,listaProductoOferta;
     RecyclerView recycler;
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
-    private int index = 1;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ProductosFragment() {
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
+    public OfertasFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ProductosFragment newInstance(int columnCount) {
-        ProductosFragment fragment = new ProductosFragment();
+    public static OfertasFragment newInstance(int columnCount) {
+        OfertasFragment fragment = new OfertasFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -85,10 +82,10 @@ public class ProductosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_productos_list, container, false);
-        callingResponse(view);
-        // Set the adapter
+        View view = inflater.inflate(R.layout.fragment_ofertas_list, container, false);
 
+        // Set the adapter
+        callingResponse(view);
         return view;
     }
 
@@ -125,11 +122,23 @@ public class ProductosFragment extends Fragment {
         void onListFragmentInteraction(DummyItem item);
     }
 
+    public void flipperImages(int i){
+
+
+     ImageView imgView = new ImageView(getActivity());
+        imgView.setBackgroundResource(i);
+
+        viewFlipper.addView(imgView);
+        viewFlipper.setFlipInterval(2000);
+        viewFlipper.setAutoStart(true);
+
+        viewFlipper.setInAnimation(getActivity(),android.R.anim.slide_in_left);
+
+
+    }
+
     public void callingResponse(View v){
-       /* flipperImages(R.drawable.promo1);
-        flipperImages(R.drawable.promo2);
-        flipperImages(R.drawable.promo3);
-*/
+
         final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
@@ -139,11 +148,11 @@ public class ProductosFragment extends Fragment {
         progressDialog.setMessage("Cargando");
         progressDialog.show();
 
-//        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
-//            @Override
-//            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
-//                if(response.isSuccessful()){
-//                    listaOfertas = response.body();
+        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
+            @Override
+            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
+                if(response.isSuccessful()){
+                    listaOfertas = response.body();
 
                     service.getProductos().enqueue(new Callback<List<Productos>>() {
                         @Override
@@ -153,22 +162,28 @@ public class ProductosFragment extends Fragment {
                                 listaProductos = response.body();
 
 
+                                int tamanio = listaOfertas.size();
+                                productos = new String[tamanio];
+                                descripcion = new String[tamanio];
+                                precio = new double[tamanio];
+                                imagenes = new int[tamanio];
 
 
-                                listproductosFiltrados = new LinkedList<Productos>();
+                                listaProductoOferta = new LinkedList<Productos>();
 
-
+                                for(int o = 0;o< listaOfertas.size();o++) {
 
                                     for(int i =0;i<listaProductos.size();i++) {
-
-                                            if(listaProductos.get(i).getIdCategoria()==index){
-                                                listproductosFiltrados.add(listaProductos.get(i));
-                                            }
-
+                                        if (listaOfertas.get(o).getIdProducto() == listaProductos.get(i).getIdProducto()) {
+                                            productos[o] = listaProductos.get(i).getNombreProducto();
+                                            descripcion[o] = listaProductos.get(i).getDescripcion();
+                                            precio[o] = listaProductos.get(i).getPrecio();
+                                            imagenes[o] = R.drawable.camisaverde;
+                                         listaProductoOferta.add(listaProductos.get(i));
 
                                         }
-
-
+                                    }
+                                }
 
                                 progressDialog.dismiss();
 
@@ -180,13 +195,13 @@ public class ProductosFragment extends Fragment {
                                     } else {
                                         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                                     }
-                                    if(listproductosFiltrados.size()==0){
-                                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                                        alertDialog.setTitle("");
-                                        alertDialog.setMessage("No productos Disponible para esta categoria");
-                                    }
 
-                                    recyclerView.setAdapter(new MyProductosRecyclerViewAdapter(listproductosFiltrados, mListener));
+//                                    viewFlipper = (ViewFlipper)v.findViewById(R.id.viewFlipper);
+//                                           flipperImages(R.drawable.promo1);
+//                                            flipperImages(R.drawable.promo2);
+//                                             flipperImages(R.drawable.promo3);
+
+                                    recyclerView.setAdapter(new MyOfertasRecyclerViewAdapter(listaProductoOferta, mListener));
                                 }
                             }
                         }
@@ -196,14 +211,14 @@ public class ProductosFragment extends Fragment {
                             Toast.makeText(getActivity(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                         }
                     });
-//
-//                }
-//            }
 
-//            @Override
-//            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
-//                Toast.makeText(getActivity(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
-//            }
-//        });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
+                Toast.makeText(getActivity(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

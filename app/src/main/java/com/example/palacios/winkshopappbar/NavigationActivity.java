@@ -35,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProductosFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProductosFragment.OnListFragmentInteractionListener,OfertasFragment.OnListFragmentInteractionListener {
 
 
 
@@ -64,7 +64,9 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new OfertasFragment()).commit();
 
+        getSupportActionBar().setTitle("WinkShop Ofertas");
     }
 
     @Override
@@ -107,6 +109,7 @@ public class NavigationActivity extends AppCompatActivity
       android.support.v4.app.Fragment f = null;
 
         boolean fragmentSeleccionado = false;
+        String titulo = "";
 
         int id = item.getItemId();
 
@@ -114,16 +117,29 @@ public class NavigationActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_home) {
 
-f = new ProductosFragment();
+f = new OfertasFragment();
 fragmentSeleccionado = true;
 
 
         } else if (id == R.id.nav_caballeros) {
+            ProductosFragment productosFragment = new ProductosFragment();
+            productosFragment.setIndex(1);
+            f= productosFragment;
+            fragmentSeleccionado = true;
+            titulo = "Caballeros";
 
         } else if (id == R.id.nav_damas) {
-
+                ProductosFragment productosFragment = new ProductosFragment();
+                productosFragment.setIndex(2);
+                f = productosFragment;
+            fragmentSeleccionado = true;
+                titulo="Damas";
         } else if (id == R.id.nav_ninios) {
-
+            ProductosFragment productosFragment = new ProductosFragment();
+            productosFragment.setIndex(3);
+            f = productosFragment;
+            fragmentSeleccionado = true;
+            titulo="Niñ@s";
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -134,7 +150,7 @@ fragmentSeleccionado = true;
         if(fragmentSeleccionado){
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main,f).commit();
             item.setChecked(true);
-            getSupportActionBar().setTitle("Caballeros");
+            getSupportActionBar().setTitle(titulo);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
