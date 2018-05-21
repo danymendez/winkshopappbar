@@ -1,9 +1,11 @@
 package Adapters;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.palacios.winkshopappbar.OfertasFragment.OnListFragmentInteractionListener;
@@ -22,11 +24,13 @@ import Models.Productos;
 public class MyOfertasRecyclerViewAdapter extends RecyclerView.Adapter<MyOfertasRecyclerViewAdapter.ViewHolder> {
 
     private final List<Productos> mValues;
+    private final Bitmap[] bitmaps;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyOfertasRecyclerViewAdapter(List<Productos> items, OnListFragmentInteractionListener listener) {
+    public MyOfertasRecyclerViewAdapter(List<Productos> items,Bitmap[] bitmaps, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        this.bitmaps = bitmaps;
     }
 
     @Override
@@ -38,10 +42,11 @@ public class MyOfertasRecyclerViewAdapter extends RecyclerView.Adapter<MyOfertas
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        //   holder.mItem = mValues.get(position);
+           holder.mItem = mValues.get(position);
         holder.tvProducto.setText(mValues.get(position).NombreProducto);
         holder.tvDescripcion.setText(mValues.get(position).Descripcion);
         holder.tvPrecio.setText("$"+mValues.get(position).getPrecio());
+        holder.imgView.setImageBitmap(bitmaps[position]);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +68,9 @@ public class MyOfertasRecyclerViewAdapter extends RecyclerView.Adapter<MyOfertas
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView tvProducto,tvDescripcion,tvPrecio;
+        public final ImageView imgView;
         // public final TextView mContentView;
-        public DummyItem mItem;
+        public Productos mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -72,6 +78,7 @@ public class MyOfertasRecyclerViewAdapter extends RecyclerView.Adapter<MyOfertas
             tvProducto = (TextView) view.findViewById(R.id.tvProducto);
             tvDescripcion = (TextView) view.findViewById(R.id.tvDescripcion);
             tvPrecio = (TextView) view.findViewById(R.id.tvPrecio);
+            imgView = (ImageView) view.findViewById(R.id.imageViewProducto);
         }
 
         @Override

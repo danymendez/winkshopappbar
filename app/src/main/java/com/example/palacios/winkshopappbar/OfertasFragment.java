@@ -27,6 +27,7 @@ import Models.Ofertas;
 import Models.Productos;
 import Services.WinkShopHelpers;
 import Services.WinkShopService;
+import Tasks.ImageDownloadToRecycler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,10 +46,7 @@ public class OfertasFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     ViewFlipper viewFlipper;
-    ListView listView;
-    String[] productos,descripcion;
-    double[] precio;
-    int[] imagenes;
+
     List<Ofertas> listaOfertas;
     List<Productos> listaProductos,listaProductoOferta;
     RecyclerView recycler;
@@ -119,7 +117,7 @@ public class OfertasFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Productos item);
     }
 
     public void flipperImages(int i){
@@ -161,32 +159,20 @@ public class OfertasFragment extends Fragment {
 
                                 listaProductos = response.body();
 
-
-                                int tamanio = listaOfertas.size();
-                                productos = new String[tamanio];
-                                descripcion = new String[tamanio];
-                                precio = new double[tamanio];
-                                imagenes = new int[tamanio];
-
-
                                 listaProductoOferta = new LinkedList<Productos>();
 
                                 for(int o = 0;o< listaOfertas.size();o++) {
 
                                     for(int i =0;i<listaProductos.size();i++) {
                                         if (listaOfertas.get(o).getIdProducto() == listaProductos.get(i).getIdProducto()) {
-                                            productos[o] = listaProductos.get(i).getNombreProducto();
-                                            descripcion[o] = listaProductos.get(i).getDescripcion();
-                                            precio[o] = listaProductos.get(i).getPrecio();
-                                            imagenes[o] = R.drawable.camisaverde;
                                          listaProductoOferta.add(listaProductos.get(i));
 
                                         }
                                     }
                                 }
 
-                                progressDialog.dismiss();
-
+                             //   progressDialog.dismiss();
+                                ImageView[] imgView = new ImageView[listaProductoOferta.size()];
                                 if (v instanceof RecyclerView) {
                                     Context context = v.getContext();
                                     RecyclerView recyclerView = (RecyclerView) v;
@@ -200,8 +186,13 @@ public class OfertasFragment extends Fragment {
 //                                           flipperImages(R.drawable.promo1);
 //                                            flipperImages(R.drawable.promo2);
 //                                             flipperImages(R.drawable.promo3);
-
-                                    recyclerView.setAdapter(new MyOfertasRecyclerViewAdapter(listaProductoOferta, mListener));
+                                    ImageDownloadToRecycler imageDownloadToRecycler = new ImageDownloadToRecycler(listaProductoOferta,mListener,recyclerView,progressDialog);
+                                    String[] urls = new String[listaProductoOferta.size()];
+                                    for(int i =0;i<listaProductoOferta.size();i++){
+                                        urls[i] = listaProductoOferta.get(i).getUrlImagen();
+                                    }
+                                    imageDownloadToRecycler.execute(urls);
+                                   // recyclerView.setAdapter(new MyOfertasRecyclerViewAdapter(listaProductoOferta,imgView, mListener));
                                 }
                             }
                         }

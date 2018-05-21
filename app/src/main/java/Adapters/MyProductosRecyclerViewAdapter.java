@@ -1,9 +1,11 @@
 package Adapters;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.palacios.winkshopappbar.ProductosFragment.OnListFragmentInteractionListener;
@@ -22,11 +24,13 @@ import Models.Productos;
 public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProductosRecyclerViewAdapter.ViewHolder> {
 
     private final List<Productos> mValues;
+    private final Bitmap[] bitmaps;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyProductosRecyclerViewAdapter(List<Productos> items, OnListFragmentInteractionListener listener) {
+    public MyProductosRecyclerViewAdapter(List<Productos> items, Bitmap[] bitmaps, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        this.bitmaps = bitmaps;
     }
 
     @Override
@@ -42,6 +46,10 @@ public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProdu
         holder.tvProducto.setText(mValues.get(position).NombreProducto);
         holder.tvDescripcion.setText(mValues.get(position).Descripcion);
         holder.tvPrecio.setText("$"+mValues.get(position).getPrecio());
+        holder.imageView.setImageBitmap(bitmaps[position]);
+        holder.mItem = mValues.get(position);
+
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,15 +71,18 @@ public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProdu
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView tvProducto,tvDescripcion,tvPrecio;
+        public final ImageView imageView;
         // public final TextView mContentView;
-        public DummyItem mItem;
+        public Productos mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            tvProducto = (TextView) view.findViewById(R.id.tvProducto);
+
+            tvProducto = (TextView)view.findViewById(R.id.tvProducto);
             tvDescripcion = (TextView) view.findViewById(R.id.tvDescripcion);
             tvPrecio = (TextView) view.findViewById(R.id.tvPrecio);
+            imageView = (ImageView) view.findViewById(R.id.imageViewProducto);
         }
 
         @Override

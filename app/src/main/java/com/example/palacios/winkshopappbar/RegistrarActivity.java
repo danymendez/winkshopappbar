@@ -48,7 +48,7 @@ public class RegistrarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
 
-        edNombre = getEditTextFromTextInputLayout(R.id.tlNombres);
+        edNombre = (TextInputLayout)findViewById(R.id.tlNombres);
         edApellido = getEditTextFromTextInputLayout(R.id.tlApellidos);
         edFechaNac = getEditTextFromTextInputLayout(R.id.tlFechaNac);
         edDireccion = getEditTextFromTextInputLayout(R.id.tlDireccion);

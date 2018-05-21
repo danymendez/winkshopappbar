@@ -26,6 +26,7 @@ import Models.Ofertas;
 import Models.Productos;
 import Services.WinkShopHelpers;
 import Services.WinkShopService;
+import Tasks.ImageDownloadToRecycler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,10 +45,7 @@ public class ProductosFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     ViewFlipper viewFlipper;
-    ListView listView;
-    String[] productos,descripcion;
-    double[] precio;
-    int[] imagenes;
+
     List<Ofertas> listaOfertas;
     List<Productos> listaProductos,listproductosFiltrados;
     RecyclerView recycler;
@@ -123,7 +121,7 @@ public class ProductosFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Productos item);
     }
 
     public void callingResponse(View v){
@@ -140,11 +138,6 @@ public class ProductosFragment extends Fragment {
         progressDialog.setMessage("Cargando");
         progressDialog.show();
 
-//        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
-//            @Override
-//            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
-//                if(response.isSuccessful()){
-//                    listaOfertas = response.body();
 
                     service.getProductos().enqueue(new Callback<List<Productos>>() {
                         @Override
@@ -153,12 +146,7 @@ public class ProductosFragment extends Fragment {
 
                                 listaProductos = response.body();
 
-
-
-
                                 listproductosFiltrados = new LinkedList<Productos>();
-
-
 
                                     for(int i =0;i<listaProductos.size();i++) {
 
@@ -171,7 +159,7 @@ public class ProductosFragment extends Fragment {
 
 
 
-                                progressDialog.dismiss();
+                               // progressDialog.dismiss();
 
                                 if (v instanceof RecyclerView) {
                                     Context context = v.getContext();
@@ -182,8 +170,9 @@ public class ProductosFragment extends Fragment {
                                         recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                                     }
                                     if(listproductosFiltrados.size()==0){
+                                        progressDialog.dismiss();
                                         final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                                        dialog.setTitle( "Error" )
+                                        dialog.setTitle( "Lo sentimos" )
 
                                                 .setMessage("No hay productos Disponibles momentaneamente")
                                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -193,8 +182,17 @@ public class ProductosFragment extends Fragment {
                                                     }
                                                 }).show();
                                     }
+                                     String[] urls = new String[listproductosFiltrados.size()];
 
-                                    recyclerView.setAdapter(new MyProductosRecyclerViewAdapter(listproductosFiltrados, mListener));
+                                    for(int i=0;i<listproductosFiltrados.size();i++){
+                                        urls[i]=listproductosFiltrados.get(i).getUrlImagen();
+                                    }
+
+                                    ImageDownloadToRecycler imageDownloadToRecycler = new ImageDownloadToRecycler(listproductosFiltrados,mListener,recyclerView,progressDialog);
+                                    imageDownloadToRecycler.execute(urls);
+
+                                  //  recyclerView.setAdapter(new MyProductosRecyclerViewAdapter(listproductosFiltrados, mListener));
+
                                 }
                             }
                         }
@@ -204,14 +202,8 @@ public class ProductosFragment extends Fragment {
                             Toast.makeText(getActivity(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                         }
                     });
-//
-//                }
-//            }
 
-//            @Override
-//            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
-//                Toast.makeText(getActivity(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
-//            }
-//        });
     }
+
+
 }

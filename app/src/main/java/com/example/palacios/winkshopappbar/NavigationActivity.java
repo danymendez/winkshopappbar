@@ -136,7 +136,7 @@ fragmentSeleccionado = true;
                 titulo="Damas";
         } else if (id == R.id.nav_ninios) {
             ProductosFragment productosFragment = new ProductosFragment();
-            productosFragment.setIndex(3);
+            productosFragment.setIndex(14);
             f = productosFragment;
             fragmentSeleccionado = true;
             titulo="Niñ@s";
@@ -181,7 +181,7 @@ fragmentSeleccionado = true;
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
+    public void onListFragmentInteraction(Productos item) {
+Toast.makeText(getApplicationContext(),item.getIdProducto()+"",Toast.LENGTH_LONG).show();
     }
 }
