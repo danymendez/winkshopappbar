@@ -3,6 +3,7 @@ package com.example.palacios.winkshopappbar;
 import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -182,6 +183,10 @@ fragmentSeleccionado = true;
 
     @Override
     public void onListFragmentInteraction(Productos item) {
-Toast.makeText(getApplicationContext(),item.getIdProducto()+"",Toast.LENGTH_LONG).show();
+
+        Intent i = new Intent(getApplicationContext(),DetailActivity.class);
+        i.putExtra("id",item.getIdProducto()+"");
+        startActivity(i);
+//Toast.makeText(getApplicationContext(),item.getIdProducto()+"",Toast.LENGTH_LONG).show();
     }
 }

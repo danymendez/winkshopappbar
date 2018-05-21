@@ -7,7 +7,7 @@
     tools:context="com.example.palacios.winkshopappbar.DetailActivity">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imgViewDet"
         android:layout_width="305dp"
         android:layout_height="275dp"
         android:layout_marginEnd="8dp"
@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/camisablanca" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvDescripcionDet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -29,10 +29,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.239"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imgViewDet" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvDescuentoDet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -42,10 +42,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.228"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDescripcionDet" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvPrecioDet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -55,13 +55,19 @@
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDescuentoDet" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnCarrito"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Añadir al carrito"
-        tools:layout_editor_absoluteX="114dp"
-        tools:layout_editor_absoluteY="447dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrecioDet" />
 </android.support.constraint.ConstraintLayout>

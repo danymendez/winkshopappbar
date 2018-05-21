@@ -1,5 +1,6 @@
 package Tasks;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -14,8 +15,13 @@ import java.io.InputStream;
 
 public class ImageDownload extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
+    ProgressDialog progressDialog;
     public ImageDownload(ImageView bmImage) {
         this.bmImage = bmImage;
+    }
+    public ImageDownload(ImageView bmImage,ProgressDialog progressDialog) {
+        this.bmImage = bmImage;
+        this.progressDialog=progressDialog;
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -32,6 +38,7 @@ public class ImageDownload extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
+     //   progressDialog.dismiss();
         bmImage.setImageBitmap(result);
     }
 }
