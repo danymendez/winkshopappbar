@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import Models.ListasProductosSing;
 import Models.Productos;
 import Models.Usuarios;
 import Services.WinkShopHelpers;
@@ -58,27 +59,36 @@ public class DetailActivity extends AppCompatActivity {
 //        progressDialog.setMessage("Cargando");
 //        progressDialog.show();
 
-
-        service.getProductos(IdProductos).enqueue(new Callback<Productos>() {
-            @Override
-            public void onResponse(Call<Productos> call, retrofit2.Response<Productos> response) {
-                if(response.isSuccessful()){
-                    Productos productos = response.body();
-                    ImageDownload imgdownload= new ImageDownload(imageView);
-                    imgdownload.execute("http://wintenten.eastus2.cloudapp.azure.com/Documents/"+productos.getUrlImagen());
+//
+//        service.getProductos(IdProductos).enqueue(new Callback<Productos>() {
+//            @Override
+//            public void onResponse(Call<Productos> call, retrofit2.Response<Productos> response) {
+//                if(response.isSuccessful()){
+//                    Productos productos = response.body();
+        Productos productos = new Productos();
+       int Index = 0;
+        for(int i = 0;i<ListasProductosSing.getListaProductos().size();i++){
+            if(IdProductos==ListasProductosSing.getListaProductos().get(i).IdProducto){
+                productos=ListasProductosSing.getListaProductos().get(i);
+                Index = i;
+            }
+        }
+                  //  ImageDownload imgdownload= new ImageDownload(imageView);
+                 //   imgdownload.execute("http://wintenten.eastus2.cloudapp.azure.com/Documents/"+productos.getUrlImagen());
+        imageView.setImageBitmap(ListasProductosSing.getBitmaps()[Index]);
                     tvDescripcion.setText(productos.getDescripcion());
                     tvPrecio.setText(productos.getPrecio()+"");
 
 
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Productos> call, Throwable t) {
-
-            }
-        });
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Productos> call, Throwable t) {
+//
+//            }
+//        });
 
 
 

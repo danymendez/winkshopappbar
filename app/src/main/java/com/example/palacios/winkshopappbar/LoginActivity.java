@@ -18,9 +18,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import Models.ListasProductosSing;
+import Models.Ofertas;
+import Models.Productos;
 import Models.Usuarios;
 import Services.WinkShopHelpers;
 import Services.WinkShopService;
+import Tasks.ImageDownloadToSingleTon;
 import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +55,52 @@ public class LoginActivity extends AppCompatActivity {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        progressDialog.setMax(100);
+        progressDialog.setTitle("");
+        progressDialog.setMessage("Cargando");
+        progressDialog.show();
+        WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+
+        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
+            @Override
+            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
+                if(response.isSuccessful()){
+                    ListasProductosSing.setListaOfertas(response.body());
+                    service.getProductos().enqueue(new Callback<List<Productos>>() {
+                        @Override
+                        public void onResponse(Call<List<Productos>> call, Response<List<Productos>> response) {
+                            if(response.isSuccessful()){
+                                //   progressDialog.dismiss();
+                                ListasProductosSing.setListaProductos(response.body());
+                                String[] urls = new String[ListasProductosSing.getListaProductos().size()];
+
+                                for(int i = 0;i<ListasProductosSing.getListaProductos().size();i++){
+                                    urls[i] = ListasProductosSing.getListaProductos().get(i).getUrlImagen();
+                                }
+
+                                ImageDownloadToSingleTon imageDownloadToSingleTon = new ImageDownloadToSingleTon(progressDialog);
+                                imageDownloadToSingleTon.execute(urls);
+
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Productos>> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
+
+            }
+        });
+
 
 
         btnInvitado.setOnClickListener(new View.OnClickListener() {

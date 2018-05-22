@@ -3,6 +3,7 @@ package com.example.palacios.winkshopappbar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -18,10 +19,12 @@ import android.widget.ViewFlipper;
 
 import com.example.palacios.winkshopappbar.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import Adapters.MyProductosRecyclerViewAdapter;
+import Models.ListasProductosSing;
 import Models.Ofertas;
 import Models.Productos;
 import Services.WinkShopHelpers;
@@ -85,8 +88,10 @@ public class ProductosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productos_list, container, false);
-        callingResponse(view);
+      //  callingResponse(view);
         // Set the adapter
+
+        callingFromSingleTon(view);
 
         return view;
     }
@@ -205,5 +210,61 @@ public class ProductosFragment extends Fragment {
 
     }
 
+    public void callingFromSingleTon(View v) {
+//        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+//
+//
+//        progressDialog.setMax(100);
+//        progressDialog.setTitle("");
+//        progressDialog.setMessage("Cargando");
+//        progressDialog.show();
+
+        listproductosFiltrados = new LinkedList<Productos>();
+        listaProductos = ListasProductosSing.getListaProductos();
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        for (int i = 0; i < listaProductos.size(); i++) {
+
+            if (listaProductos.get(i).getIdCategoria() == index) {
+                listproductosFiltrados.add(listaProductos.get(i));
+                arrayList.add(i);
+            }
+
+
+        }
+
+
+        // progressDialog.dismiss();
+
+        if (v instanceof RecyclerView) {
+            Context context = v.getContext();
+            RecyclerView recyclerView = (RecyclerView) v;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
+            if (listproductosFiltrados.size() == 0) {
+               // progressDialog.dismiss();
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setTitle("Lo sentimos")
+
+                        .setMessage("No hay productos Disponibles momentaneamente")
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialoginterface, int i) {
+                                // Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+
+                            }
+                        }).show();
+            }
+            Bitmap[] bitmaps = new Bitmap[listproductosFiltrados.size()];
+
+            for (int i = 0; i < listproductosFiltrados.size(); i++) {
+                bitmaps[i] = ListasProductosSing.getBitmaps()[arrayList.get(i)];
+            }
+            recyclerView.setAdapter(new MyProductosRecyclerViewAdapter(listproductosFiltrados,bitmaps,mListener));
+//            ImageDownloadToRecycler imageDownloadToRecycler = new ImageDownloadToRecycler(listproductosFiltrados, mListener, recyclerView, progressDialog);
+//            imageDownloadToRecycler.execute(urls);
+        }
+    }
 
 }
