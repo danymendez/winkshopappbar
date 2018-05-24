@@ -2,6 +2,7 @@ package Models;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,16 @@ public class ListasProductosSing {
     public static Bitmap[] bitmaps;
     public static List<Ofertas> listaOfertas;
     public static Clientes clientes;
+    public static ArrayList<Integer> arrayListIdProductos = new ArrayList<Integer>();
     private ListasProductosSing() {
+    }
+
+    public static ArrayList<Integer> getArrayListIdProductos() {
+        return arrayListIdProductos;
+    }
+
+    public static void setArrayListIdProductos(ArrayList<Integer> arrayListIdProductos) {
+        ListasProductosSing.arrayListIdProductos = arrayListIdProductos;
     }
 
     public static List<Productos> getListaProductos() {

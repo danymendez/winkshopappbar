@@ -17,8 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -27,6 +29,7 @@ import com.example.palacios.winkshopappbar.dummy.DummyContent;
 import java.util.List;
 
 import Adapters.AdaptadorOfertas;
+import Models.ListasProductosSing;
 import Models.Ofertas;
 import Models.Productos;
 import Services.WinkShopHelpers;
@@ -38,6 +41,8 @@ import retrofit2.Response;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ProductosFragment.OnListFragmentInteractionListener,OfertasFragment.OnListFragmentInteractionListener {
 
+    ImageButton imageButtonCarrito;
+    TextView tvCarrito;
 
 
     @Override
@@ -46,6 +51,8 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +71,17 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        imageButtonCarrito = toolbar.findViewById(R.id.imageButtonCarrito);
+        tvCarrito = toolbar.findViewById(R.id.tvCarrito);
+
+        int numeroProductos = ListasProductosSing.arrayListIdProductos.size();
+
+        if(numeroProductos!=0){
+            tvCarrito.setText(""+numeroProductos);
+        }else{
+            tvCarrito.setText("");
+        }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new OfertasFragment()).commit();
 
@@ -188,5 +206,19 @@ fragmentSeleccionado = true;
         i.putExtra("id",item.getIdProducto()+"");
         startActivity(i);
 //Toast.makeText(getApplicationContext(),item.getIdProducto()+"",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int numeroProductos = ListasProductosSing.arrayListIdProductos.size();
+
+        if(numeroProductos!=0){
+            tvCarrito.setText(""+numeroProductos);
+        }else{
+            tvCarrito.setText("");
+        }
+        // your code (for example: initialize(); etc.. )
     }
 }

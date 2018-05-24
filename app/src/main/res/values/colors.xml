@@ -6,4 +6,5 @@
     <color name="colorWhite">#FFF</color>
     <color name="colorBackgroundLogin">#FFF</color>
     <color name="colorTexViewBlue">#045FB4</color>
+    <color name="backgroundlayoutwhite">#fff</color>
 </resources>

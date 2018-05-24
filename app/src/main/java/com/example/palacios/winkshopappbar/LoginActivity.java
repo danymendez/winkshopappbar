@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvwRegistrarse;
     Button btnRegistrarse,btnInvitado;
     List<Usuarios> usuariosList;
+    String idusuario ="",nombre = "";
 
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
 
@@ -56,58 +58,18 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
-        progressDialog.setMax(100);
+               progressDialog.setMax(100);
         progressDialog.setTitle("");
         progressDialog.setMessage("Cargando");
-        progressDialog.show();
-        WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
 
-        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
-            @Override
-            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
-                if(response.isSuccessful()){
-                    ListasProductosSing.setListaOfertas(response.body());
-                    service.getProductos().enqueue(new Callback<List<Productos>>() {
-                        @Override
-                        public void onResponse(Call<List<Productos>> call, Response<List<Productos>> response) {
-                            if(response.isSuccessful()){
-                                //   progressDialog.dismiss();
-                                ListasProductosSing.setListaProductos(response.body());
-                                String[] urls = new String[ListasProductosSing.getListaProductos().size()];
-
-                                for(int i = 0;i<ListasProductosSing.getListaProductos().size();i++){
-                                    urls[i] = ListasProductosSing.getListaProductos().get(i).getUrlImagen();
-                                }
-
-                                ImageDownloadToSingleTon imageDownloadToSingleTon = new ImageDownloadToSingleTon(progressDialog);
-                                imageDownloadToSingleTon.execute(urls);
-
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<Productos>> call, Throwable t) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
-
-            }
-        });
-
-
+      //  WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
 
         btnInvitado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),NavigationActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(getApplicationContext(),NavigationActivity.class);
+//                startActivity(i);
+                callResponse(progressDialog);
             }
         });
 
@@ -142,15 +104,16 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 boolean seEncontroUsuario = false;
                                 List<Usuarios> listaUsuario = response.body();
+
                                 for (Usuarios us : listaUsuario) {
                                    if(us.getUsuario().equals(usuario) && us.getPassword().equals(password)){
                                       seEncontroUsuario = true;
+                                      nombre = us.getNombres()+" "+us.getApellidos();
+                                       idusuario = us.getIdUsuario()+"";
                                    }
                                 }
                                 if(seEncontroUsuario){
-                                    progressDialog.dismiss();
-                                    Intent i = new Intent(getApplicationContext(),NavigationActivity.class);
-                                    startActivity(i);
+
                                 }else{
                                     progressDialog.dismiss();
                                     dialog.setTitle( "Error" )
@@ -158,12 +121,10 @@ public class LoginActivity extends AppCompatActivity {
                                             .setMessage("Usuario y/o Contraseña Erronea")
                                             .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialoginterface, int i) {
-                                                    // Intent i = new Intent(getApplicationContext(),LoginActivity.class);
 
                                                 }
                                             }).show();
-                                  //  Toast.makeText(getApplicationContext(),"Usuario y/o Contraseña Erronea",Toast.LENGTH_SHORT).show();
-                                }
+                            }
                             }
                         }
 
@@ -186,7 +147,104 @@ public class LoginActivity extends AppCompatActivity {
                });
 
     }
+public void callResponse(ProgressDialog progressDialog, String usuario, String IdUsuario, String Correo){
+    WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+//    final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+//    progressDialog.setMax(100);
+//    progressDialog.setTitle("");
+//    progressDialog.setMessage("Cargando");
+//    progressDialog.show();
+    service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
+        @Override
+        public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
+            if(response.isSuccessful()){
+                ListasProductosSing.setListaOfertas(response.body());
+                service.getProductos().enqueue(new Callback<List<Productos>>() {
+                    @Override
+                    public void onResponse(Call<List<Productos>> call, Response<List<Productos>> response) {
+                        if(response.isSuccessful()){
+                            //   progressDialog.dismiss();
+                            ListasProductosSing.setListaProductos(response.body());
+                            String[] urls = new String[ListasProductosSing.getListaProductos().size()];
 
+                            for(int i = 0;i<ListasProductosSing.getListaProductos().size();i++){
+                                urls[i] = ListasProductosSing.getListaProductos().get(i).getUrlImagen();
+                            }
+                            Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
+                         //   intent.putExtra("usuario",usuario);
+                         //   intent.putExtra("idusuario",idusuario);
+                         //   intent.putExtra("nombre",nombre);
+                            ImageDownloadToSingleTon imageDownloadToSingleTon = new ImageDownloadToSingleTon(progressDialog,getApplicationContext(),intent);
+                            imageDownloadToSingleTon.execute(urls);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Productos>> call, Throwable t) {
+
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onFailure(Call<List<Ofertas>> call, Throwable t) {
+
+        }
+    });
+
+}
+
+    public void callResponse(ProgressDialog progressDialog){
+        WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
+        progressDialog.show();
+//    final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+//    progressDialog.setMax(100);
+//    progressDialog.setTitle("");
+//    progressDialog.setMessage("Cargando");
+//    progressDialog.show();
+        service.getOfertas().enqueue(new Callback<List<Ofertas>>() {
+            @Override
+            public void onResponse(Call<List<Ofertas>> call, Response<List<Ofertas>> response) {
+                if(response.isSuccessful()){
+                    ListasProductosSing.setListaOfertas(response.body());
+                    service.getProductos().enqueue(new Callback<List<Productos>>() {
+                        @Override
+                        public void onResponse(Call<List<Productos>> call, Response<List<Productos>> response) {
+                            if(response.isSuccessful()){
+                                //   progressDialog.dismiss();
+                                ListasProductosSing.setListaProductos(response.body());
+                                String[] urls = new String[ListasProductosSing.getListaProductos().size()];
+
+                                for(int i = 0;i<ListasProductosSing.getListaProductos().size();i++){
+                                    urls[i] = ListasProductosSing.getListaProductos().get(i).getUrlImagen();
+                                }
+                                Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
+                                //   intent.putExtra("usuario",usuario);
+                                //   intent.putExtra("idusuario",idusuario);
+                                //   intent.putExtra("nombre",nombre);
+                                ImageDownloadToSingleTon imageDownloadToSingleTon = new ImageDownloadToSingleTon(progressDialog,getApplicationContext(),intent);
+                                imageDownloadToSingleTon.execute(urls);
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Productos>> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Ofertas>> call, Throwable t) {
+
+            }
+        });
+
+    }
     public EditText getEdit(int i){
         return (EditText)findViewById(i);
     }
