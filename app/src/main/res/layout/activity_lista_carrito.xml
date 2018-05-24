@@ -6,4 +6,33 @@
     android:layout_height="match_parent"
     tools:context="com.example.palacios.winkshopappbar.ListaCarritoActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listViewCarritoDet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/listacarritolayout">
+
+            </ListView>
+
+            <Button
+                android:id="@+id/btnComprarCarritoDet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comprar" />
+        </LinearLayout>
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
