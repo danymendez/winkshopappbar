@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,8 +26,8 @@ public class ListaCarritoActivity extends AppCompatActivity {
     ArrayList<Integer> IdsAComprar;
     ArrayList<Integer> IdsAComprarFiltradas;
     ArrayList<Integer>  cantidades;
-    ArrayList<Integer> cantidadesFiltradas;
     Bitmap[] bitmaps;
+    TextView tvTotalCarrito;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +82,20 @@ public class ListaCarritoActivity extends AppCompatActivity {
 
       bitmaps = new Bitmap[listaproductosfiltrado.size()];
 
+        double totales = 0;
+
         for(int i =0; i<listaproductos.size();i++){
 
             for(int o =0;o<listaproductosfiltrado.size();o++){
                 if(listaproductosfiltrado.get(o).getIdProducto()==listaproductos.get(i).getIdProducto()){
                     bitmaps[o] = ListasProductosSing.getBitmaps()[i];
+                    totales +=(cantidades.get(o)*listaproductosfiltrado.get(o).getPrecio());
                 }
             }
         }
 
+        tvTotalCarrito = findViewById(R.id.tvTotalCarrito);
+        tvTotalCarrito.setText("El total de la compra es: $"+totales);
         listView.setAdapter(new BaseAdaptador(getApplicationContext(),listaproductosfiltrado,cantidades,bitmaps));
 
 

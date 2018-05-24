@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundlayoutwhite"
     tools:context="com.example.palacios.winkshopappbar.DetailActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarDet"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar">
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -69,7 +70,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
-        android:text="Descripción: Camisa de seda, variedad de tallas de poliester y de salmón"
+        android:text="@string/demodescripciondetalle"
         android:textAlignment="center"
 
         app:layout_constraintEnd_toEndOf="parent"

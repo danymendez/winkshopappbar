@@ -9,5 +9,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="total">Total:</string>
+    <string name="comprar">Comprar</string>
+    <string name="carritotitle">Carrito de Compras</string>
+    <string name="demodescripciondetalle">Descripción: Camisa de seda, variedad de tallas de poliester y de salmón</string>
+    <string name="usuariohint">Usuario</string>
+    <string name="contrasenahint">Contraseña</string>
+    <string name="registrarselogin">Registrarse</string>
+    <string name="ingresarinvitadologin">Ingresar como invitado</string>
+    <string name="ingresarlogin">Ingresar</string>
 
 </resources>

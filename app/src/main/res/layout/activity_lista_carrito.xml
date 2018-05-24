@@ -22,16 +22,26 @@
             <ListView
                 android:id="@+id/listViewCarritoDet"
                 android:layout_width="match_parent"
-                android:layout_height="448dp"
+                android:layout_height="437dp"
                 tools:listitem="@layout/listacarritolayout">
+
 
             </ListView>
 
+            <TextView
+                android:id="@+id/tvTotalCarrito"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textAlignment="center"
+                android:textColor="@color/colorTexViewBlue"
+                android:textSize="20dp"
+                android:textStyle="bold" />
             <Button
                 android:id="@+id/btnComprarCarritoDet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comprar" />
+                android:text="@string/comprar" />
         </LinearLayout>
     </ScrollView>
 

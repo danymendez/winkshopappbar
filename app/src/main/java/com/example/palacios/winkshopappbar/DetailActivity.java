@@ -3,6 +3,7 @@ package com.example.palacios.winkshopappbar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDet);
+        toolbar.setTitle("Detalle");
         setSupportActionBar(toolbar);
 
         tvDescripcion = findViewById(R.id.tvDescripcionDet);
@@ -155,6 +157,14 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     });
 
+
+                    imageButtonCarrito.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(getApplicationContext(),ListaCarritoActivity.class);
+                            startActivity(i);
+                        }
+                    });
 //
 //                }
 //            }
@@ -168,5 +178,18 @@ public class DetailActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        int numeroProductos = ListasProductosSing.arrayListIdProductos.size();
+
+        if(numeroProductos!=0){
+            tvCarrito.setText(""+numeroProductos);
+        }else{
+            tvCarrito.setText("");
+        }
     }
 }

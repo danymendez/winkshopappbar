@@ -30,9 +30,10 @@
             android:label="Registro de Usuario" />
         <activity
             android:name=".NavigationActivity"
-            android:label="@string/title_activity_navigation"
+            android:label="@string/carritotitle"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ListaCarritoActivity"></activity>
+        <activity android:name=".ListaCarritoActivity"
+            android:label="@string/carritotitle"></activity>
     </application>
 
 </manifest>
