@@ -40,7 +40,7 @@ public class BaseAdaptador extends BaseAdapter {
     }
 
     public BaseAdaptador(Context context,List<Productos> listaproductos,  ArrayList<Integer> cantidades,Bitmap[] bitmaps) {
-
+this.context = context;
    this.listaproductos = listaproductos;
    this.cantidades = cantidades;
    this.bitmaps = bitmaps;
@@ -50,12 +50,12 @@ public class BaseAdaptador extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return productos.length;
+        return listaproductos.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return productos[i];
+        return listaproductos.get(i);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class BaseAdaptador extends BaseAdapter {
         TextView tvDescripcion =(TextView)view.findViewById(R.id.tvDescripcionCarritoDet);
         tvDescripcion.setText(listaproductos.get(i).getDescripcion());
         TextView tvPrecio = (TextView)view.findViewById(R.id.tvPrecioCarritoDet);
-        tvPrecio.setText("$"+(listaproductos.get(i).getPrecio()*cantidades.get(i)));
+        tvPrecio.setText("Cantidad: "+cantidades.get(i)+" X $"+listaproductos.get(i).getPrecio()+" Total = $"+(listaproductos.get(i).getPrecio()*cantidades.get(i)));
         ImageView imageView = (ImageView) view.findViewById(R.id.imageViewProductoCarritoDet);
         imageView.setImageBitmap(bitmaps[i]);
         return view;

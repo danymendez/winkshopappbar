@@ -82,7 +82,13 @@ public class NavigationActivity extends AppCompatActivity
         }else{
             tvCarrito.setText("");
         }
-
+        imageButtonCarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),ListaCarritoActivity.class);
+                startActivity(i);
+            }
+        });
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new OfertasFragment()).commit();
 
         getSupportActionBar().setTitle("WinkShop Ofertas");

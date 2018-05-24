@@ -37,34 +37,45 @@ public class ListaCarritoActivity extends AppCompatActivity {
       listaproductos = new LinkedList<Productos>();
       listaproductos = ListasProductosSing.getListaProductos();
 
+      listaproductosfiltrado = new LinkedList<Productos>();
+
       listaOfertas = new LinkedList<Ofertas>();
       listaOfertas = ListasProductosSing.getListaOfertas();
 
-      IdsAComprar = ListasProductosSing.arrayListIdProductos;
+      IdsAComprar = ListasProductosSing.getArrayListIdProductos();
+      IdsAComprarFiltradas = new ArrayList<Integer>();
+      cantidades = new ArrayList<Integer>();
 
 
-      for(int i = 0;i<IdsAComprar.size();i++){
 
-          IdsAComprarFiltradas.add(IdsAComprar.get(i));
 
-          if(IdsAComprarFiltradas.size()>0) {
-              for (int o = 0; o < IdsAComprarFiltradas.size(); o++) {
-                  if (IdsAComprar.get(i) == IdsAComprarFiltradas.get(o)) {
-                        cantidades.set(o,cantidades.get(o)+1);
-                  }else{
-                      IdsAComprarFiltradas.add(IdsAComprar.get(i));
-                  }
+      for(int i =0; i<IdsAComprar.size();i++){
+
+              if(!IdsAComprarFiltradas.contains(IdsAComprar.get(i))){
+                  IdsAComprarFiltradas.add(IdsAComprar.get(i));
               }
-          }else{
-              IdsAComprarFiltradas.add(IdsAComprar.get(i));
-              cantidades.add(1);
-          }
+
+
+
       }
+        for(int o = 0;o<IdsAComprarFiltradas.size();o++){
+            int numeros = 0;
+            for(int i = 0;i<IdsAComprar.size();i++){
+               if(IdsAComprarFiltradas.get(o)==IdsAComprar.get(i)){
+                   numeros++;
+               }
+
+            }
+            cantidades.add(numeros);
+        }
+
 
       //Identificando cuales son los productos a comprar;
-      for(int i =0;i<IdsAComprarFiltradas.size();i++){
-          if(listaproductos.get(i).getIdProducto()==IdsAComprarFiltradas.get(i)){
-              listaproductosfiltrado.add(listaproductos.get(i));
+      for(int i =0;i<listaproductos.size();i++){
+          for(int o=0;o<IdsAComprarFiltradas.size();o++) {
+              if (listaproductos.get(i).getIdProducto() == IdsAComprarFiltradas.get(o)) {
+                  listaproductosfiltrado.add(listaproductos.get(i));
+              }
           }
       }
 
@@ -73,13 +84,13 @@ public class ListaCarritoActivity extends AppCompatActivity {
         for(int i =0; i<listaproductos.size();i++){
 
             for(int o =0;o<listaproductosfiltrado.size();o++){
-                if(listaproductosfiltrado.get(i).getIdProducto()==listaproductos.get(i).getIdProducto()){
+                if(listaproductosfiltrado.get(o).getIdProducto()==listaproductos.get(i).getIdProducto()){
                     bitmaps[o] = ListasProductosSing.getBitmaps()[i];
                 }
             }
         }
 
-        listView.setAdapter(new BaseAdaptador(getApplicationContext(),listaproductos,cantidades,bitmaps));
+        listView.setAdapter(new BaseAdaptador(getApplicationContext(),listaproductosfiltrado,cantidades,bitmaps));
 
 
     }
