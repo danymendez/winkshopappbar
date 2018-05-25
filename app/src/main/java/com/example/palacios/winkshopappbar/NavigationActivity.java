@@ -43,7 +43,8 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ProductosFragment.OnListFragmentInteractionListener,OfertasFragment.OnListFragmentInteractionListener {
 
     ImageButton imageButtonCarrito;
-    TextView tvCarrito;
+    TextView tvCarrito,tvUsuario,tvCorreo;
+    String idusuario ="",nombre = "",correo="";
 
 
     @Override
@@ -53,7 +54,14 @@ public class NavigationActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        nombre = getIntent().getStringExtra("nombre");
+        correo = getIntent().getStringExtra("correo");
+        idusuario = getIntent().getStringExtra("idusuario");
+//
+//        tvUsuario = findViewById(R.id.tvUsuario);
+//        tvCorreo = findViewById(R.id.tvCorreo);
+//        tvUsuario.setText(correo);
+//        tvUsuario.setText(nombre);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
@@ -73,6 +81,13 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+        tvCorreo = (TextView)hView.findViewById(R.id.tvCorreo);
+        tvUsuario = (TextView)hView.findViewById(R.id.tvUsuario);
+        if(nombre!=null)
+        tvUsuario.setText(nombre);
+        if(correo!=null)
+            tvCorreo.setText(correo);
 
         imageButtonCarrito = toolbar.findViewById(R.id.imageButtonCarrito);
         tvCarrito = toolbar.findViewById(R.id.tvCarrito);
@@ -168,10 +183,10 @@ fragmentSeleccionado = true;
             fragmentSeleccionado = true;
             titulo="Niñ@s";
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
 
         if(fragmentSeleccionado){

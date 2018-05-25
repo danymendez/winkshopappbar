@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvwRegistrarse;
     Button btnRegistrarse,btnInvitado;
     List<Usuarios> usuariosList;
-    String idusuario ="",nombre = "";
+    String idusuario ="",nombre = "",correo="";
 
     WinkShopHelpers winkShopHelpers = new WinkShopHelpers();
 
@@ -110,10 +110,11 @@ public class LoginActivity extends AppCompatActivity {
                                       seEncontroUsuario = true;
                                       nombre = us.getNombres()+" "+us.getApellidos();
                                        idusuario = us.getIdUsuario()+"";
+                                       correo = us.getUsuario();
                                    }
                                 }
                                 if(seEncontroUsuario){
-
+                                    callResponse(progressDialog,usuario,idusuario,correo);
                                 }else{
                                     progressDialog.dismiss();
                                     dialog.setTitle( "Error" )
@@ -147,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                });
 
     }
-public void callResponse(ProgressDialog progressDialog, String usuario, String IdUsuario, String Correo){
+    public void callResponse(ProgressDialog progressDialog, String usuario, String IdUsuario, String Correo){
     WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
 //    final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
 //    progressDialog.setMax(100);
@@ -171,9 +172,9 @@ public void callResponse(ProgressDialog progressDialog, String usuario, String I
                                 urls[i] = ListasProductosSing.getListaProductos().get(i).getUrlImagen();
                             }
                             Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
-                         //   intent.putExtra("usuario",usuario);
-                         //   intent.putExtra("idusuario",idusuario);
-                         //   intent.putExtra("nombre",nombre);
+                            intent.putExtra("correo",usuario);
+                            intent.putExtra("idusuario",idusuario);
+                            intent.putExtra("nombre",nombre);
                             ImageDownloadToSingleTon imageDownloadToSingleTon = new ImageDownloadToSingleTon(progressDialog,getApplicationContext(),intent);
                             imageDownloadToSingleTon.execute(urls);
 
