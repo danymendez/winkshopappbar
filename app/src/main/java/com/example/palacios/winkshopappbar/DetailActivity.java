@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import Models.Carritos;
 import Models.ListasProductosSing;
 import Models.Ofertas;
 import Models.Productos;
@@ -87,21 +88,6 @@ public class DetailActivity extends AppCompatActivity {
         int Index = 0;
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         final WinkShopService service = winkShopHelpers.retrofit.create(WinkShopService.class);
-//        final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
-//
-//
-//        progressDialog.setMax(100);
-//        progressDialog.setTitle("");
-//        progressDialog.setMessage("Cargando");
-//        progressDialog.show();
-
-//
-//        service.getProductos(IdProductos).enqueue(new Callback<Productos>() {
-//            @Override
-//            public void onResponse(Call<Productos> call, retrofit2.Response<Productos> response) {
-//                if(response.isSuccessful()){
-//                    Productos productos = response.body();
-
 
         for(int i = 0;i<listaProductos.size();i++){
             if(IdProductos==listaProductos.get(i).IdProducto){
@@ -116,8 +102,6 @@ public class DetailActivity extends AppCompatActivity {
                     descuento=listaOfertas.get(o).getDescuento()*100;
                 }
            }
-                  //  ImageDownload imgdownload= new ImageDownload(imageView);
-                 //   imgdownload.execute("http://wintenten.eastus2.cloudapp.azure.com/Documents/"+productos.getUrlImagen());
 
                     imageView.setImageBitmap(ListasProductosSing.getBitmaps()[Index]);
                     tvDescripcion.setText(productos.getDescripcion());
@@ -138,7 +122,40 @@ public class DetailActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             ListasProductosSing.arrayListIdProductos.add(IdProductos);
-                            int numeroProductos = ListasProductosSing.arrayListIdProductos.size();
+                            List<Productos> listaProductos = ListasProductosSing.getListaProductos();
+                            List<Carritos> listaCarritos = ListasProductosSing.getCarritosList();
+
+                            if(!listaCarritos.contains(IdProductos)){
+                                Carritos carritos = new Carritos();
+                                carritos.setIdProducto(IdProductos);
+                                carritos.setCantidad(1);
+                                for(int i = 0;i<listaProductos.size();i++){
+                                    if(listaProductos.get(i).IdProducto==IdProductos){
+                                        carritos.setPrecio(listaProductos.get(i).getPrecio());
+                                    }
+                                }
+                                carritos.setPrecioTotal(carritos.getCantidad()*carritos.getPrecio());
+                                listaCarritos.add(carritos);
+                            }else{
+                                for(int i =0;i<listaCarritos.size();i++){
+                                    if(listaCarritos.get(i).IdProducto==IdProductos){
+                                        Carritos carritos = new Carritos();
+                                        carritos = listaCarritos.get(i);
+                                        int cantidad = carritos.getCantidad();
+                                        cantidad++;
+                                        carritos.setCantidad(cantidad);
+                                        carritos.setPrecioTotal(carritos.getPrecio()*carritos.getCantidad());
+
+                                    }
+                                }
+                            }
+
+
+                            int numeroProductos =0;
+
+                            for(int i = 0;i<listaCarritos.size();i++){
+                                numeroProductos = listaCarritos.get(i).getCantidad()+numeroProductos;
+                            }
 
                             if(numeroProductos!=0){
                                 tvCarrito.setText(""+numeroProductos);
@@ -147,14 +164,13 @@ public class DetailActivity extends AppCompatActivity {
                             }
 
                             dialog.setTitle( "Éxito" )
-
-                                    .setMessage("Producto Agregado Correctamente !!!")
-                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialoginterface, int i) {
+                                  .setMessage("Producto Agregado Correctamente !!!")
+                                  .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialoginterface, int i) {
 
                                         }
                                     }).show();
-                        }
+                            }
                     });
 
 
@@ -165,17 +181,6 @@ public class DetailActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Productos> call, Throwable t) {
-//
-//            }
-//        });
-
-
 
 
     }
@@ -184,7 +189,13 @@ public class DetailActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
-        int numeroProductos = ListasProductosSing.arrayListIdProductos.size();
+        List<Carritos> listaCarritos = ListasProductosSing.getCarritosList();
+
+        int numeroProductos =0;
+
+        for(int i = 0;i<listaCarritos.size();i++){
+            numeroProductos = listaCarritos.get(i).getCantidad()+numeroProductos;
+        }
 
         if(numeroProductos!=0){
             tvCarrito.setText(""+numeroProductos);

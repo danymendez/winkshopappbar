@@ -100,4 +100,8 @@ public class ListaCarritoActivity extends AppCompatActivity {
 
 
     }
+
+    public void llenarCarrito(){
+
+    }
 }

@@ -30,6 +30,7 @@ import com.example.palacios.winkshopappbar.dummy.DummyContent;
 import java.util.List;
 
 import Adapters.AdaptadorOfertas;
+import Models.Carritos;
 import Models.ListasProductosSing;
 import Models.Ofertas;
 import Models.Productos;
@@ -235,7 +236,13 @@ fragmentSeleccionado = true;
     protected void onResume() {
         super.onResume();
 
-        int numeroProductos = ListasProductosSing.arrayListIdProductos.size();
+        List<Carritos> listaCarritos = ListasProductosSing.getCarritosList();
+
+        int numeroProductos =0;
+
+        for(int i = 0;i<listaCarritos.size();i++){
+            numeroProductos = listaCarritos.get(i).getCantidad()+numeroProductos;
+        }
 
         if(numeroProductos!=0){
             tvCarrito.setText(""+numeroProductos);
