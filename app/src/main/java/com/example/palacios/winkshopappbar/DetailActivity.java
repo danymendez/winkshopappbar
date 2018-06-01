@@ -121,30 +121,55 @@ public class DetailActivity extends AppCompatActivity {
                     btnCarrito.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                           double precio = 0;
+                           double cantidad = 0;
+                           double preciototal = 0;
+                           boolean isTrue = false;
+
                             ListasProductosSing.arrayListIdProductos.add(IdProductos);
                             List<Productos> listaProductos = ListasProductosSing.getListaProductos();
                             List<Carritos> listaCarritos = ListasProductosSing.getCarritosList();
 
-                            if(!listaCarritos.contains(IdProductos)){
-                                Carritos carritos = new Carritos();
-                                carritos.setIdProducto(IdProductos);
-                                carritos.setCantidad(1);
-                                for(int i = 0;i<listaProductos.size();i++){
-                                    if(listaProductos.get(i).IdProducto==IdProductos){
-                                        carritos.setPrecio(listaProductos.get(i).getPrecio());
-                                    }
+                            Carritos carritos = new Carritos();
+                            carritos.setIdProducto(IdProductos);
+                            carritos.setCantidad(1);
+                            for(int i = 0;i<listaProductos.size();i++){
+                                if(listaProductos.get(i).IdProducto==IdProductos){
+                                    carritos.setPrecio(listaProductos.get(i).getPrecio());
+                                    carritos.setDescripcion(listaProductos.get(i).getDescripcion());
+                                    carritos.setNombreProducto(listaProductos.get(i).getNombreProducto());
                                 }
-                                carritos.setPrecioTotal(carritos.getCantidad()*carritos.getPrecio());
+                            }
+                            precio = carritos.getPrecio();
+                            cantidad = carritos.getCantidad();
+                            preciototal = precio*cantidad;
+
+                            carritos.setPrecioTotal(preciototal);
+
+
+
+                             for(int i = 0; i<listaCarritos.size();i++){
+                                 if(listaCarritos.get(i).getIdProducto()==carritos.getIdProducto()){
+                                     isTrue = true;
+                                 }
+                             }
+
+                            if(!isTrue){
                                 listaCarritos.add(carritos);
                             }else{
                                 for(int i =0;i<listaCarritos.size();i++){
                                     if(listaCarritos.get(i).IdProducto==IdProductos){
-                                        Carritos carritos = new Carritos();
+                                         carritos = new Carritos();
                                         carritos = listaCarritos.get(i);
-                                        int cantidad = carritos.getCantidad();
-                                        cantidad++;
-                                        carritos.setCantidad(cantidad);
-                                        carritos.setPrecioTotal(carritos.getPrecio()*carritos.getCantidad());
+                                        int cantidad2 = carritos.getCantidad();
+                                        cantidad2++;
+                                        carritos.setCantidad(cantidad2);
+                                        precio = carritos.getPrecio();
+                                        cantidad = carritos.getCantidad();
+                                        preciototal = precio*cantidad;
+                                        carritos.setPrecioTotal(preciototal);
+                                        listaCarritos.remove(i);
+                                        listaCarritos.add(carritos);
 
                                     }
                                 }
@@ -163,6 +188,8 @@ public class DetailActivity extends AppCompatActivity {
                                 tvCarrito.setText("");
                             }
 
+                            ListasProductosSing.setCarritosList(listaCarritos);
+
                             dialog.setTitle( "Éxito" )
                                   .setMessage("Producto Agregado Correctamente !!!")
                                   .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -171,6 +198,7 @@ public class DetailActivity extends AppCompatActivity {
                                         }
                                     }).show();
                             }
+
                     });
 
 

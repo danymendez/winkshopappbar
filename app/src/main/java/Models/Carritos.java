@@ -8,9 +8,26 @@ public class Carritos {
 
     public int IdProducto;
     public int Cantidad;
+    public String NombreProducto;
+    public String Descripcion;
     public double Precio;
     public double PrecioTotal;
 
+    public String getNombreProducto() {
+        return NombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        NombreProducto = nombreProducto;
+    }
+
+    public String getDescripcion() {
+        return Descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        Descripcion = descripcion;
+    }
 
     public int getIdProducto() {
         return IdProducto;

@@ -14,48 +14,35 @@ import com.example.palacios.winkshopappbar.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.Carritos;
 import Models.Productos;
 
 public class BaseAdaptador extends BaseAdapter {
 
 
-    private String[] productos;
-    private int[] imagenes;
-    private Context context;
-    private String[] descripcion;
-    private double[] precio;
-    private View item;
 
-    List<Productos> listaproductos;
-    private ArrayList<Integer> cantidades;
+    private Context context;
+
+    private View item;
+    List<Carritos> listaCarrito;
     private Bitmap[] bitmaps;
 
-    public BaseAdaptador(Context context, String[] productos, int[] imagenes, String[] descripcion,double[] precio) {
-
-        this.productos = productos;
-        this.imagenes = imagenes;
+    public BaseAdaptador(Context context,List<Carritos> listaCarrito,Bitmap[] bitmaps) {
         this.context = context;
-        this.descripcion = descripcion;
-        this.precio = precio;
-    }
-
-    public BaseAdaptador(Context context,List<Productos> listaproductos,  ArrayList<Integer> cantidades,Bitmap[] bitmaps) {
-this.context = context;
-   this.listaproductos = listaproductos;
-   this.cantidades = cantidades;
-   this.bitmaps = bitmaps;
+        this.listaCarrito = listaCarrito;
+        this.bitmaps = bitmaps;
     }
 
 
 
     @Override
     public int getCount() {
-        return listaproductos.size();
+        return listaCarrito.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return listaproductos.get(i);
+        return listaCarrito.get(i);
     }
 
     @Override
@@ -70,11 +57,11 @@ this.context = context;
             view = LayoutInflater.from(context).inflate(R.layout.listacarritolayout,viewGroup,false);
         }
         TextView tvProducto =(TextView)view.findViewById(R.id.tvProductoCarritoDet);
-        tvProducto.setText(listaproductos.get(i).getNombreProducto());
+        tvProducto.setText(listaCarrito.get(i).getNombreProducto());
         TextView tvDescripcion =(TextView)view.findViewById(R.id.tvDescripcionCarritoDet);
-        tvDescripcion.setText(listaproductos.get(i).getDescripcion());
+        tvDescripcion.setText(listaCarrito.get(i).getDescripcion());
         TextView tvPrecio = (TextView)view.findViewById(R.id.tvPrecioCarritoDet);
-        tvPrecio.setText("Cantidad: "+cantidades.get(i)+" X $"+listaproductos.get(i).getPrecio()+" Total = $"+(listaproductos.get(i).getPrecio()*cantidades.get(i)));
+        tvPrecio.setText("Cantidad: "+listaCarrito.get(i).getCantidad()+" X $"+listaCarrito.get(i).getPrecio()+" Total = $"+(listaCarrito.get(i).getPrecioTotal()));
         ImageView imageView = (ImageView) view.findViewById(R.id.imageViewProductoCarritoDet);
         imageView.setImageBitmap(bitmaps[i]);
         return view;
