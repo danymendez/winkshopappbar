@@ -23,6 +23,7 @@ public class ListasProductosSing {
     public static ArrayList<Integer> arrayListIdProductos = new ArrayList<Integer>();
     public static List<Carritos> carritosList = new LinkedList<Carritos>();
 
+
     private ListasProductosSing() {
     }
 

@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -57,7 +60,9 @@ public class ListaCarritoActivity extends AppCompatActivity {
 
         tvTotalCarrito = findViewById(R.id.tvTotalCarrito);
         tvTotalCarrito.setText("El total de la compra es: $"+totales);
-        listView.setAdapter(new BaseAdaptador(getApplicationContext(),listaCarritos,bitmaps));
+        BaseAdaptador baseAdaptador = new BaseAdaptador(getApplicationContext(),listaCarritos,bitmaps);
+        listView.setAdapter(baseAdaptador);
+       // baseAdaptador.notifyDataSetChanged();
 
 
     }

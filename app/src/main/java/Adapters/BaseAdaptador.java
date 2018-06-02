@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.palacios.winkshopappbar.R;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Models.Carritos;
+import Models.ListasProductosSing;
 import Models.Productos;
 
 public class BaseAdaptador extends BaseAdapter {
@@ -56,6 +59,45 @@ public class BaseAdaptador extends BaseAdapter {
         if(view==null){
             view = LayoutInflater.from(context).inflate(R.layout.listacarritolayout,viewGroup,false);
         }
+        ImageButton imageButton = (ImageButton)view.findViewById(R.id.imageButtonEliminar);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                     Carritos carritos = listaCarrito.get(i);
+                       int cantidad = carritos.getCantidad();
+                       cantidad--;
+                       carritos.setCantidad(cantidad);
+
+                       if(cantidad!=0) {
+
+
+                           double preciototal = ((double) cantidad) * carritos.getPrecio();
+                           carritos.setPrecioTotal(preciototal);
+                           listaCarrito.set(i,carritos);
+
+
+
+                      // listacarritos.remove(i);
+
+                   }else{
+                           listaCarrito.remove(i);
+                           bitmaps = new Bitmap[listaCarrito.size()];
+                           for(int a =0; a<ListasProductosSing.getListaProductos().size();a++){
+
+                               for(int o =0;o<listaCarrito.size();o++){
+                                   if(listaCarrito.get(o).getIdProducto()==ListasProductosSing.getListaProductos().get(a).getIdProducto()){
+                                       bitmaps[o] = ListasProductosSing.getBitmaps()[a];
+                                     //  totales +=(listaCarrito.get(o).getPrecioTotal());
+                                   }
+                               }
+                           }
+                       }
+
+                notifyDataSetChanged();
+                ListasProductosSing.setCarritosList(listaCarrito);
+
+            }
+        });
         TextView tvProducto =(TextView)view.findViewById(R.id.tvProductoCarritoDet);
         tvProducto.setText(listaCarrito.get(i).getNombreProducto());
         TextView tvDescripcion =(TextView)view.findViewById(R.id.tvDescripcionCarritoDet);
@@ -66,4 +108,6 @@ public class BaseAdaptador extends BaseAdapter {
         imageView.setImageBitmap(bitmaps[i]);
         return view;
     }
+
+
 }
