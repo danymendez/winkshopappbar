@@ -18,5 +18,6 @@
     <string name="registrarselogin">Registrarse</string>
     <string name="ingresarinvitadologin">Ingresar como invitado</string>
     <string name="ingresarlogin">Ingresar</string>
+    <string name="title_activity_compra">Map</string>
 
 </resources>

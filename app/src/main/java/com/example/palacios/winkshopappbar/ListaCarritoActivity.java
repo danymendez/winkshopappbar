@@ -1,5 +1,6 @@
 package com.example.palacios.winkshopappbar;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class ListaCarritoActivity extends AppCompatActivity {
     ArrayList<Integer> IdsAComprarFiltradas;
     ArrayList<Integer>  cantidades;
     Bitmap[] bitmaps;
+    Button btnComprarCarrito;
     TextView tvTotalCarrito;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class ListaCarritoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_carrito);
 
         listView = findViewById(R.id.listViewCarritoDet);
+        btnComprarCarrito = findViewById(R.id.btnComprarCarritoDet);
 
       //llenarCarrito2();
 
@@ -135,5 +139,19 @@ public class ListaCarritoActivity extends AppCompatActivity {
 
         tvTotalCarrito = findViewById(R.id.tvTotalCarrito);
         tvTotalCarrito.setText("El total de la compra es: $"+totales);
+
+        btnComprarCarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               final int idusuario = Integer.parseInt(getIntent().getStringExtra("idusuario"));
+               if(idusuario!=0){
+                   Intent i = new Intent(getApplicationContext(),CompraActivity.class);
+                   startActivity(i);
+               }else{
+                   Intent i = new Intent(getApplicationContext(),RegistrarActivity.class);
+                   startActivity(i);
+               }
+            }
+        });
     }
 }
